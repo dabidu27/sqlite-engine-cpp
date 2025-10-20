@@ -1,0 +1,24 @@
+# Ignore Visual Studio user-specific and build files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+Debug/
+Release/
+x64/
+x86/
+*.exe
+*.dll
+*.pdb
+*.lib
+
+# Other temporary files
+*.log
+*.vsidx
+*.cache
+*.tmp
