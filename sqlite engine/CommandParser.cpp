@@ -1,8 +1,13 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 #include "CommandParser.h"
 #include "StringUtils.h"
+#include "CommandType.h"
 #include <cstring>
+#include <string>
+#include "DataTypes.h"
+
 
 CommandType CommandParser::recognizeCommand(std::string command) {
 	
@@ -32,7 +37,7 @@ CommandType CommandParser::recognizeCommand(std::string command) {
 	else if (command.find("DELETE") == 0)
 		return DELETE_CMD;
 	else
-		return UNKNOWN;
+		return UNKNOWN_CMD;
 }
 
 char** CommandParser::tokenizeCommand(std::string command, int& n_tokens) {
@@ -61,5 +66,89 @@ char** CommandParser::tokenizeCommand(std::string command, int& n_tokens) {
 	}
 	
 	delete[] copy;
+	copy = nullptr;
 	return tokens;
+}
+
+bool CommandParser::validateCreateTable(std::string command) {
+
+	std::string copy = command;
+	int n_tokens = 0;
+	char** tokens = tokenizeCommand(copy, n_tokens);
+
+	if (n_tokens < 4) {
+		std::cout <<std::endl<< "Error: Invalid CREATE TABLE syntax.";
+		return false;
+	}
+	
+	if (strcmp(tokens[0], "CREATE") != 0 || strcmp(tokens[1], "TABLE") != 0) {
+
+		std::cout << std::endl << "Error: Invalid CREATE TABLE syntax";
+		return false;
+	}
+
+	if (strchr(tokens[2], '(') != nullptr || strchr(tokens[2], ')') != nullptr || strchr(tokens[2], ',') != nullptr) {
+
+		std::cout << std::endl << "Error: Invalid table name";
+		return false;
+	}
+
+	if (strchr(tokens[3], '(') == nullptr || strchr(tokens[n_tokens-1], ')') == nullptr) {
+		
+		std::cout << std::endl << "Error: Missing paranthesis";
+		return false;
+	}
+
+	for (int i = 3; i < n_tokens - 1; i = i + 2) {
+
+		if (strchr(tokens[i], ',') != nullptr) {
+			std::cout << std::endl << "Error: Unexpected comma";
+			return false;
+		}
+	}
+
+	int n_columns = 0;
+	for (int i = 4; i < n_tokens - 1; i = i + 2) {
+
+		n_columns++;
+		if (strchr(tokens[i], ',') == nullptr) {
+			std::cout << std::endl << "Error: Expected comma";
+			return false;
+		}
+
+		DataType type = getDataFromString(tokens[i]);
+		if (type == UNKNOWN_DATA_TYPE) {
+			std::cout << std::endl << "Error: Unknown data type";
+			return false;
+		}
+	}
+
+	DataType type = getDataFromString(tokens[n_tokens - 1]);
+	if (type == UNKNOWN_DATA_TYPE) {
+		std::cout << std::endl << "Error: Unknown data type";
+		return false;
+	}
+	else
+		n_columns++;
+
+
+	std::cout << std::endl << "Create table command looks valid";
+	std::cout << std::endl << "Table name: " << tokens[2];
+	std::cout << std::endl << "Number of columns: " << n_columns;
+
+	for (int i = 0; i < n_tokens; i++) {
+		delete[] tokens[i];
+	}
+	delete[] tokens;
+
+	return true;
+}
+
+bool CommandParser::validateCommand(std::string command) {
+
+	std::string copy = command;
+	toUpper(copy);
+	CommandType type = recognizeCommand(copy);
+
+	return validateCreateTable(copy);
 }

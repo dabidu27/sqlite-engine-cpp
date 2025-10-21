@@ -10,5 +10,5 @@ enum CommandType {
 	SELECT_CMD,
 	UPDATE_CMD,
 	DELETE_CMD,
-	UNKNOWN
+	UNKNOWN_CMD
 };

@@ -1,10 +1,14 @@
 #pragma once
-enum DataType {
+#include <string>
 
-	INTEGER,
-	TEXT,
-	DATE,
-	REAL,
-	BOOLEAN,
-	BLOB
+enum DataType {
+    INTEGER,
+    TEXT,
+    DATE,
+    REAL,
+    BOOLEAN,
+    BLOB,
+    UNKNOWN_DATA_TYPE
 };
+
+DataType getDataFromString(char* string_type);
