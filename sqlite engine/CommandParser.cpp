@@ -1,8 +1,10 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include "CommandParser.h"
 #include "StringUtils.h"
+#include <cstring>
 
-CommandType CommandParser::parseCommand(std::string command) {
+CommandType CommandParser::recognizeCommand(std::string command) {
 	
 	toUpper(command);
 	
@@ -31,4 +33,33 @@ CommandType CommandParser::parseCommand(std::string command) {
 		return DELETE_CMD;
 	else
 		return UNKNOWN;
+}
+
+char** CommandParser::tokenizeCommand(std::string command, int& n_tokens) {
+
+	char* copy = new char[command.length() + 1];
+	strcpy(copy, command.c_str());
+
+	char* token = strtok(copy, " ");
+	while (token){
+		
+		n_tokens++;
+		token = strtok(nullptr, " ");
+	}
+
+	char** tokens = new char* [n_tokens];
+
+	strcpy(copy, command.c_str());
+	token = strtok(copy, " ");
+	int i = 0;
+	while (token && i < n_tokens) {
+		
+		tokens[i] = new char[strlen(token) + 1];
+		strcpy(tokens[i], token);
+		token = strtok(nullptr, " ");
+		i++;
+	}
+	
+	delete[] copy;
+	return tokens;
 }

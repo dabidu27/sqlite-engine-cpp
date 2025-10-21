@@ -5,6 +5,7 @@
 
 class CommandParser {
 	public:
-		CommandType parseCommand(std::string command);
+		CommandType recognizeCommand(std::string command);
+		char** tokenizeCommand(std::string command, int& n_tokens);
 
 };
