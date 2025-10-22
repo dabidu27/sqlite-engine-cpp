@@ -5,20 +5,20 @@ using namespace std;
 
 int main() {
 
-	CommandParser parser;
+	string command = " create index idx on album (albums)";
+	CommandParser parser(command);
 	CommandType type;
-	string command = " DROP TABLE (albums)";
 
-	type = parser.recognizeCommand(command);
+	type = parser.recognizeCommand();
 	cout << endl << "Command type: " << type;
 	cout << endl;
 
 	int n_tokens = 0;
-	char** command_tokens = parser.tokenizeCommand(command, n_tokens);
+	char** command_tokens = parser.tokenizeCommand(n_tokens);
 	for (int i = 0; i < n_tokens; i++)
 		cout << endl << "Token " << i << ": " << command_tokens[i];
 
-	bool valid = parser.validateCommand(command);
+	bool valid = parser.validateCommand();
 
 	return 0;
 	

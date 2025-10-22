@@ -8,42 +8,49 @@
 #include <string>
 #include "DataTypes.h"
 
+CommandParser::CommandParser(std::string command) {
 
-CommandType CommandParser::recognizeCommand(std::string command) {
+	this->command = command;
+}
+
+CommandType CommandParser::recognizeCommand() {
 	
-	toUpper(command);
+	std::string copy = this->command;
+	toUpper(copy);
 	
 	//remove blank spaces at the beggining of the command if they exist
-	while (!command.empty() && command[0] == ' ')
-		command.erase(0, 1); //erases one character starting from position 0
+	while (!copy.empty() && copy[0] == ' ')
+		copy.erase(0, 1); //erases one character starting from position 0
 
 	//.find() returns the position at which a substring begins
-	if (command.find("CREATE TABLE") == 0)
+	if (copy.find("CREATE TABLE") == 0)
 		return CREATE_TABLE_CMD;
-	else if (command.find("CREATE INDEX") == 0)
+	else if (copy.find("CREATE INDEX") == 0)
 		return CREATE_INDEX_CMD;
-	else if (command.find("DROP TABLE") == 0)
+	else if (copy.find("DROP TABLE") == 0)
 		return DROP_TABLE_CMD;
-	else if (command.find("DROP INDEX") == 0)
+	else if (copy.find("DROP INDEX") == 0)
 		return DROP_INDEX_CMD;
-	else if (command.find("DISPLAY TABLE") == 0)
+	else if (copy.find("DISPLAY TABLE") == 0)
 		return DISPLAY_TABLE_CMD;
-	else if (command.find("INSERT") == 0)
+	else if (copy.find("INSERT") == 0)
 		return INSERT_CMD;
-	else if (command.find("SELECT") == 0)
+	else if (copy.find("SELECT") == 0)
 		return SELECT_CMD;
-	else if (command.find("UPDATE") == 0)
+	else if (copy.find("UPDATE") == 0)
 		return UPDATE_CMD;
-	else if (command.find("DELETE") == 0)
+	else if (copy.find("DELETE") == 0)
 		return DELETE_CMD;
 	else
 		return UNKNOWN_CMD;
 }
 
-char** CommandParser::tokenizeCommand(std::string command, int& n_tokens) {
+char** CommandParser::tokenizeCommand(int& n_tokens) {
 
-	char* copy = new char[command.length() + 1];
-	strcpy(copy, command.c_str());
+	char* copy = new char[this->command.length() + 1];
+	toUpper(this->command);
+	strcpy(copy, this->command.c_str());
+
 
 	char* token = strtok(copy, " ");
 	while (token){
@@ -54,7 +61,7 @@ char** CommandParser::tokenizeCommand(std::string command, int& n_tokens) {
 
 	char** tokens = new char* [n_tokens];
 
-	strcpy(copy, command.c_str());
+	strcpy(copy, this->command.c_str());
 	token = strtok(copy, " ");
 	int i = 0;
 	while (token && i < n_tokens) {
@@ -70,11 +77,11 @@ char** CommandParser::tokenizeCommand(std::string command, int& n_tokens) {
 	return tokens;
 }
 
-bool CommandParser::validateCreateTable(std::string command) {
+bool CommandParser::validateCreateTable() {
 
-	std::string copy = command;
+	std::string copy = this->command;
 	int n_tokens = 0;
-	char** tokens = tokenizeCommand(copy, n_tokens);
+	char** tokens = tokenizeCommand(n_tokens);
 
 	if (n_tokens < 4) {
 		std::cout <<std::endl<< "Error: Invalid CREATE TABLE syntax.";
@@ -144,11 +151,11 @@ bool CommandParser::validateCreateTable(std::string command) {
 	return true;
 }
 
-bool CommandParser::validateCreateIndex(std::string command) {
+bool CommandParser::validateCreateIndex() {
 
-	std::string copy = command;
+	std::string copy = this->command;
 	int n_tokens = 0;
-	char** tokens = tokenizeCommand(copy, n_tokens);
+	char** tokens = tokenizeCommand(n_tokens);
 
 	if (n_tokens < 6) {
 
@@ -204,11 +211,11 @@ bool CommandParser::validateCreateIndex(std::string command) {
 
 }
 
-bool CommandParser::validateDropTable(std::string command) {
+bool CommandParser::validateDropTable() {
 	
-	std::string copy = command;
+	std::string copy = this->command;
 	int n_tokens = 0;
-	char** tokens = tokenizeCommand(copy, n_tokens);
+	char** tokens = tokenizeCommand(n_tokens);
 
 	if (n_tokens < 3) {
 
@@ -234,26 +241,25 @@ bool CommandParser::validateDropTable(std::string command) {
 
 	for (int i = 0; i < n_tokens; i++)
 		delete[] tokens[i];
-	delete tokens;
+	delete[] tokens;
 
 	return true;
 }
 
 
-bool CommandParser::validateCommand(std::string command) {
+bool CommandParser::validateCommand() {
 
-	std::string copy = command;
-	toUpper(copy);
-	CommandType type = recognizeCommand(copy);
+	std::string copy = this->command;
+	CommandType type = recognizeCommand();
 
 	switch (type) {
 
 		case CREATE_TABLE_CMD:
-			return validateCreateTable(copy);
+			return validateCreateTable();
 		case CREATE_INDEX_CMD:
-			return validateCreateIndex(copy);
+			return validateCreateIndex();
 		case DROP_TABLE_CMD:
-			return validateDropTable(copy);
+			return validateDropTable();
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";
 			return false;
