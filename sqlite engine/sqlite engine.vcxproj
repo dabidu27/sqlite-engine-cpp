@@ -129,10 +129,12 @@
   <ItemGroup>
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="CommandType.h" />
+    <ClInclude Include="DataTypes.h" />
     <ClInclude Include="StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandParser.cpp" />
+    <ClCompile Include="DataTypes.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
