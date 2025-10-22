@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = " create index idx on album (albums)";
+	string command = "DISPLAY TABLE albums";
 	CommandParser parser(command);
 	CommandType type;
 
