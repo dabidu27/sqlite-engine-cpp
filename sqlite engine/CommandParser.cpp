@@ -204,6 +204,42 @@ bool CommandParser::validateCreateIndex(std::string command) {
 
 }
 
+bool CommandParser::validateDropTable(std::string command) {
+	
+	std::string copy = command;
+	int n_tokens = 0;
+	char** tokens = tokenizeCommand(copy, n_tokens);
+
+	if (n_tokens < 3) {
+
+		std::cout << std::endl << "Error: Invalid DROP TABLE syntax";
+		return false;
+	}
+
+	if (strcmp(tokens[0], "DROP") != 0 || strcmp(tokens[1], "TABLE") != 0) {
+
+		std::cout << std::endl << "Error: Invalid DROP TABLE syntax";
+		return false;
+	}
+
+	char* table_name = tokens[2];
+	if (strlen(table_name) == 0 || strchr(table_name, '(') != nullptr || strchr(table_name, ')') != nullptr) {
+
+		std::cout << std::endl << "Error: Invalid or missing table name";
+		return false;
+	}
+
+	std::cout << std::endl << "DROP TABLE command looks valid";
+	std::cout << std::endl << "Table name: " << table_name;
+
+	for (int i = 0; i < n_tokens; i++)
+		delete[] tokens[i];
+	delete tokens;
+
+	return true;
+}
+
+
 bool CommandParser::validateCommand(std::string command) {
 
 	std::string copy = command;
@@ -216,6 +252,8 @@ bool CommandParser::validateCommand(std::string command) {
 			return validateCreateTable(copy);
 		case CREATE_INDEX_CMD:
 			return validateCreateIndex(copy);
+		case DROP_TABLE_CMD:
+			return validateDropTable(copy);
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";
 			return false;

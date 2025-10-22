@@ -7,7 +7,7 @@ int main() {
 
 	CommandParser parser;
 	CommandType type;
-	string command = "  CREATE INDEX idx_artist ON albums artist";
+	string command = " DROP TABLE (albums)";
 
 	type = parser.recognizeCommand(command);
 	cout << endl << "Command type: " << type;
