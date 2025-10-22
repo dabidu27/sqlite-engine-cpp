@@ -7,7 +7,7 @@ int main() {
 
 	CommandParser parser;
 	CommandType type;
-	string command = "CREATE TABLE cars (id INTEGER, name TEXT, brand, TEXT,)";
+	string command = "  CREATE INDEX idx_artist ON albums artist";
 
 	type = parser.recognizeCommand(command);
 	cout << endl << "Command type: " << type;

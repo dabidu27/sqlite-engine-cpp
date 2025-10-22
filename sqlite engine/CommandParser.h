@@ -10,5 +10,6 @@ class CommandParser {
 		char** tokenizeCommand(std::string command, int& n_tokens);
 		bool validateCommand(std::string command);
 		bool validateCreateTable(std::string command);
+		bool validateCreateIndex(std::string command);
 
 };

@@ -144,11 +144,81 @@ bool CommandParser::validateCreateTable(std::string command) {
 	return true;
 }
 
+bool CommandParser::validateCreateIndex(std::string command) {
+
+	std::string copy = command;
+	int n_tokens = 0;
+	char** tokens = tokenizeCommand(copy, n_tokens);
+
+	if (n_tokens < 6) {
+
+		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
+		return false;
+	}
+
+	if (strcmp(tokens[0], "CREATE") != 0 || strcmp(tokens[1], "INDEX") != 0) {
+
+		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
+		return false;
+	}
+
+	char* index_name = tokens[2];
+	if (strcmp(index_name, "ON") == 0) {
+
+		std::cout << std::endl << "Error: Missing index name";
+		return false;
+	}
+
+	if (strcmp(tokens[3], "ON") != 0) {
+
+		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
+		return false;
+	}
+
+	char* table_name = tokens[4];
+	if (strchr(table_name, '(') != nullptr || strchr(table_name, ')') != nullptr) {
+
+		std::cout << std::endl << "Error: Missing table name";
+		return false;
+	}
+
+	char* column = tokens[5];
+	if (strchr(column, '(') == 0 || strchr(column, ')') == nullptr) {
+
+		std::cout << std::endl << "Error: Missing paranthesis";
+		return false;
+	}
+
+	std::cout << std::endl << "Create index command looks valid";
+	std::cout << std::endl << "Index name: " << index_name;
+	std::cout << std::endl << "Table name: " << table_name;
+	std::cout << std::endl << "Column name: " << column;
+
+	for (int i = 0; i < n_tokens; i++) {
+		delete[] tokens[i];
+	}
+	delete[] tokens;
+
+	return true;
+
+
+}
+
 bool CommandParser::validateCommand(std::string command) {
 
 	std::string copy = command;
 	toUpper(copy);
 	CommandType type = recognizeCommand(copy);
 
-	return validateCreateTable(copy);
+	switch (type) {
+
+		case CREATE_TABLE_CMD:
+			return validateCreateTable(copy);
+		case CREATE_INDEX_CMD:
+			return validateCreateIndex(copy);
+		default:
+			std::cout << std::endl << "Error: Unknown or unsupported command";
+			return false;
+	}
+
 }
