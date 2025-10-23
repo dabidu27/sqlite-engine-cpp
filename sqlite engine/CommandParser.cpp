@@ -333,6 +333,21 @@ bool CommandParser::validateDeleteTable() {
 		
 }
 
+bool CommandParser::validateSelect() {
+
+	std::regex selectRegex(R"(^\s*SELECT\s+(\*|[A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*(?:\s+WHERE\s+\w+\s+=\s+\w+)?\s*$)");
+
+	if (std::regex_match(this->command, selectRegex)) {
+
+		std::cout << std::endl << "SELECT command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Invalid SELECT syntax";
+		return false;
+	}
+}
+
 
 bool CommandParser::validateCommand() {
 
@@ -353,6 +368,8 @@ bool CommandParser::validateCommand() {
 			return validateDisplayTable();
 		case DELETE_CMD:
 			return validateDeleteTable();
+		case SELECT_CMD:
+			return validateSelect();
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";
 			return false;

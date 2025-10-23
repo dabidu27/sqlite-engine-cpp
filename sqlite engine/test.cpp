@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "DELETE FROM albums WHERE artist = Eminem";
+	string command = "SELECT name, FROM albums ";
 	CommandParser parser(command);
 	CommandType type;
 
