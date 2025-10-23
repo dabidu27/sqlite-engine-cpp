@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "SELECT name, FROM albums ";
+	string command = "SELECT name, FROM albums";
 	CommandParser parser(command);
 	CommandType type;
 
