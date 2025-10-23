@@ -246,6 +246,75 @@ bool CommandParser::validateDropTable() {
 	return true;
 }
 
+bool CommandParser::validateDropIndex() {
+
+	std::string copy = this->command;
+	int n_tokens = 0;
+	char** tokens = tokenizeCommand(n_tokens);
+
+	if (n_tokens < 3) {
+		std::cout << std::endl << "Error: Invalid DROP INDEX syntax";
+		return false;
+	}
+
+	if (strcmp(tokens[0], "DROP") != 0 || strcmp(tokens[1], "INDEX") != 0) {
+		std::cout << std::endl << "Error: Invalid DROP INDEX syntax";
+		return false;
+	}
+
+	char* index_name = tokens[2];
+	if (strlen(index_name) == 0 || strchr(index_name, '(') != nullptr || strchr(index_name, ')') != nullptr) {
+		std::cout << std::endl << "Error: Invalid or missing index name";
+		return false;
+	}
+
+	std::cout << std::endl << "DROP INDEX command looks valid";
+	std::cout << std::endl << "Index name: " << index_name;
+
+	for (int i = 0; i < n_tokens; i++)
+		delete[] tokens[i];
+	delete[] tokens;
+
+	return true;
+}
+
+bool CommandParser::validateDisplayTable() {
+
+	std::string copy = this->command;
+	int n_tokens = 0;
+	char** tokens = tokenizeCommand(n_tokens);
+
+	if (n_tokens < 3) {
+		std::cout << std::endl << "Error: Invalid DISPLAY TABLE syntax";
+		return false;
+	}
+
+	if (strcmp(tokens[0], "DISPLAY") != 0 || strcmp(tokens[1], "TABLE") != 0) {
+		std::cout << std::endl << "Error: Invalid DISPLAY TABLE syntax";
+		return false;
+	}
+
+	char* table_name = tokens[2];
+	if (strlen(table_name) == 0 ||
+		strchr(table_name, '(') != nullptr ||
+		strchr(table_name, ')') != nullptr ||
+		strchr(table_name, ',') != nullptr) {
+
+		std::cout << std::endl << "Error: Invalid or missing table name";
+		return false;
+	}
+
+	std::cout << std::endl << "DISPLAY TABLE command looks valid";
+	std::cout << std::endl << "Table name: " << table_name;
+
+	for (int i = 0; i < n_tokens; i++)
+		delete[] tokens[i];
+	delete[] tokens;
+
+	return true;
+}
+
+
 
 bool CommandParser::validateCommand() {
 
@@ -260,6 +329,10 @@ bool CommandParser::validateCommand() {
 			return validateCreateIndex();
 		case DROP_TABLE_CMD:
 			return validateDropTable();
+		case DROP_INDEX_CMD: 
+			return validateDropIndex();
+		case DISPLAY_TABLE_CMD: 
+			return validateDisplayTable();
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";
 			return false;
