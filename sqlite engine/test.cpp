@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "DISPLAY TABLE albums";
+	string command = "    INSERT INTO albums VALUES (1, 2, 3, 4)";
 	CommandParser parser(command);
 	CommandType type;
 
