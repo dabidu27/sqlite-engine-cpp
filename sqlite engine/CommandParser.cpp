@@ -314,6 +314,83 @@ bool CommandParser::validateDisplayTable() {
 
 	return true;
 }
+bool CommandParser::validateInsert()
+{
+	std::string copy = this->command;
+	int n_tokens = 0;
+	char** tokens = tokenizeCommand(n_tokens);
+	if (n_tokens < 4)
+	{
+		std::cout << "Error: Invalid INSERT syntax.\n";
+		return false;
+	}
+
+	if (strcmp(tokens[0], "INSERT") != 0 || strcmp(tokens[1], "INTO") != 0)
+	{
+		std::cout << "Error: Invalid INSERT syntax.\n";
+	}
+
+	char* table_name = tokens[2];
+	if (strlen(table_name) == 0 ||
+		strchr(table_name, '(') != nullptr ||
+		strchr(table_name, ')') != nullptr ||
+		strchr(table_name, ',') != nullptr) {
+
+		std::cout << std::endl << "Error: Invalid or missing table name";
+		return false;
+	}
+
+	if (strcmp(tokens[3], "VALUES") != 0)
+	{
+		std::cout << std::endl << "Error: Invalid INSERT syntax.";
+		return false;
+	}
+
+	if (strchr(tokens[4], '(') == nullptr || strchr(tokens[n_tokens - 1], ')') == nullptr) {
+
+		std::cout << std::endl << "Error: Missing paranthesis";
+		return false;
+	}
+
+	if (strcmp(tokens[4], "(,") == 0) {
+
+		std::cout << std::endl << "Error: Invalid INSERT syntax.";
+		return false;
+	}
+
+	int n_values = 0;
+	for (int i = 4; i < n_tokens - 1; i = i + 1) {
+
+		n_values++;
+		if (strcmp(tokens[i], ",") == 0) {
+
+			std::cout << std::endl << "Error: Invalid INSERT syntax.";
+			return false;
+		}
+		if (strchr(tokens[i], ',') == nullptr) {
+			std::cout << std::endl << "Error: Expected comma";
+			return false;
+		}
+	}
+
+	if (strchr(tokens[n_tokens - 1], ',') != nullptr) {
+		std::cout << std::endl << "Error: Unxpected comma";
+		return false;
+	}
+	else
+		n_values++;
+
+	for (int i = 0; i < n_tokens; i++)
+	{
+		delete[] tokens[i];
+	}
+	delete[] tokens;
+
+	std::cout << std::endl << "Command INSERT looks valid";
+	std::cout << std::endl << "Number of values: " << n_values;
+	return true;
+
+}
 
 bool CommandParser::validateDeleteTable() {
 
@@ -366,10 +443,14 @@ bool CommandParser::validateCommand() {
 			return validateDropIndex();
 		case DISPLAY_TABLE_CMD: 
 			return validateDisplayTable();
+		case INSERT_CMD:
+			return validateInsert();
 		case DELETE_CMD:
 			return validateDeleteTable();
 		case SELECT_CMD:
 			return validateSelect();
+		
+
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";
 			return false;
