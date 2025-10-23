@@ -7,6 +7,7 @@
 #include <cstring>
 #include <string>
 #include "DataTypes.h"
+#include <regex>
 
 CommandParser::CommandParser(std::string command) {
 
@@ -314,6 +315,23 @@ bool CommandParser::validateDisplayTable() {
 	return true;
 }
 
+bool CommandParser::validateDeleteTable() {
+
+	std::string copy = this->command;
+	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+\w+$)");
+	
+	if (std::regex_match(copy, deleteTableRegex)) {
+
+		std::cout << std::endl << "DELETE FROM command looks valid";
+		return true;
+	}
+	else {
+
+		std::cout << std::endl << "Invalid DELETE FROM syntax";
+		return false;
+	}
+		
+}
 
 
 bool CommandParser::validateCommand() {
@@ -333,6 +351,8 @@ bool CommandParser::validateCommand() {
 			return validateDropIndex();
 		case DISPLAY_TABLE_CMD: 
 			return validateDisplayTable();
+		case DELETE_CMD:
+			return validateDeleteTable();
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";
 			return false;
