@@ -7,6 +7,7 @@
 #include <cstring>
 #include <string>
 #include "DataTypes.h"
+#include <regex>
 
 CommandParser::CommandParser(std::string command) {
 
@@ -313,7 +314,6 @@ bool CommandParser::validateDisplayTable() {
 
 	return true;
 }
-
 bool CommandParser::validateInsert()
 {
 	std::string copy = this->command;
@@ -346,8 +346,8 @@ bool CommandParser::validateInsert()
 		return false;
 	}
 
-	if (strchr(tokens[4], '(') == nullptr || strchr(tokens[n_tokens-1], ')') == nullptr) {
-		
+	if (strchr(tokens[4], '(') == nullptr || strchr(tokens[n_tokens - 1], ')') == nullptr) {
+
 		std::cout << std::endl << "Error: Missing paranthesis";
 		return false;
 	}
@@ -386,9 +386,43 @@ bool CommandParser::validateInsert()
 	}
 	delete[] tokens;
 
-	std::cout << std::endl<< "Command INSERT looks valid";
-	std::cout << std::endl<< "Number of values: " << n_values;
+	std::cout << std::endl << "Command INSERT looks valid";
+	std::cout << std::endl << "Number of values: " << n_values;
 	return true;
+
+}
+
+bool CommandParser::validateDeleteTable() {
+
+	std::string copy = this->command;
+	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+\w+$)");
+	
+	if (std::regex_match(copy, deleteTableRegex)) {
+
+		std::cout << std::endl << "DELETE FROM command looks valid";
+		return true;
+	}
+	else {
+
+		std::cout << std::endl << "Invalid DELETE FROM syntax";
+		return false;
+	}
+		
+}
+
+bool CommandParser::validateSelect() {
+
+	std::regex selectRegex(R"(^\s*SELECT\s+(\*|[A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*(?:\s+WHERE\s+\w+\s+=\s+\w+)?\s*$)");
+
+	if (std::regex_match(this->command, selectRegex)) {
+
+		std::cout << std::endl << "SELECT command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Invalid SELECT syntax";
+		return false;
+	}
 }
 
 
@@ -411,6 +445,11 @@ bool CommandParser::validateCommand() {
 			return validateDisplayTable();
 		case INSERT_CMD:
 			return validateInsert();
+		case DELETE_CMD:
+			return validateDeleteTable();
+		case SELECT_CMD:
+			return validateSelect();
+		
 
 		default:
 			std::cout << std::endl << "Error: Unknown or unsupported command";

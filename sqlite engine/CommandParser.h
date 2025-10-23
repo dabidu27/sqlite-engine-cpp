@@ -24,4 +24,7 @@ class CommandParser {
 		bool validateDropIndex();
 		bool validateDisplayTable();
 		bool validateInsert();
+		bool validateDeleteTable();
+		bool validateSelect();
+		
 };
