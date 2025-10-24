@@ -26,5 +26,6 @@ class CommandParser {
 		bool validateInsert();
 		bool validateDeleteTable();
 		bool validateSelect();
+		bool validateUpdate();
 		
 };

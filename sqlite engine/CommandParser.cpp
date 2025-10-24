@@ -425,6 +425,21 @@ bool CommandParser::validateSelect() {
 	}
 }
 
+bool CommandParser::validateUpdate() {
+
+	std::regex updateRegex(R"(^\s*UPDATE\s+[A-Za-z_][A-Za-z0-9_]*\s+SET\s+[A-Za-z_][A-Za-z0-9_]*\s+=\s+\w+\s+WHERE\s+[A-Za-z_][A-Za-z0-9_]*\s+=\s+\w+\s*$)");
+	
+	if (std::regex_match(this->command, updateRegex)) {
+
+		std::cout << std::endl << "UPDATE command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Invalid UPDATE syntax";
+		return false;
+	}
+}
+
 
 bool CommandParser::validateCommand() {
 
@@ -449,6 +464,8 @@ bool CommandParser::validateCommand() {
 			return validateDeleteTable();
 		case SELECT_CMD:
 			return validateSelect();
+		case UPDATE_CMD:
+			return validateUpdate();
 		
 
 		default:
