@@ -9,7 +9,7 @@
 #include "DataTypes.h"
 #include <regex>
 
-CommandParser::CommandParser(std::string command) {
+CommandParser::CommandParser(const std::string command) {
 
 	this->command = command;
 }

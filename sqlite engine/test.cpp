@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "UPDATE users SET age = '25' WHERE id = 1";
+	string command = "UPDATE users SET age = 25 WHERE id = 1";
 	CommandParser parser(command);
 	CommandType type;
 
