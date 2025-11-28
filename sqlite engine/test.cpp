@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "SELECT (nume) FROM studenti WHERE id = 1, nume = \"John\"";
+	string command = "DELETE FROM studenti data WHERE nume = \"John\"";
 
 	CommandParser parser(command);
 	CommandType type;

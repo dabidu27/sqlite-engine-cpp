@@ -372,7 +372,7 @@ bool CommandParser::validateInsert()
 bool CommandParser::validateDeleteTable() {
 
 	std::string copy = this->command;
-	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+\w+$)");
+	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")$)");
 
 	if (std::regex_match(copy, deleteTableRegex)) {
 
@@ -425,16 +425,16 @@ bool CommandParser::validateCommand() {
 
 	switch (type) {
 
-	/*case CREATE_TABLE_CMD:
-		return validateCreateTable();
-	case CREATE_INDEX_CMD:
-		return validateCreateIndex();
-	case DROP_TABLE_CMD:
-		return validateDropTable();
-	case DROP_INDEX_CMD:
-		return validateDropIndex();
-	case DISPLAY_TABLE_CMD:
-		return validateDisplayTable();*/
+		/*case CREATE_TABLE_CMD:
+			return validateCreateTable();
+		case CREATE_INDEX_CMD:
+			return validateCreateIndex();
+		case DROP_TABLE_CMD:
+			return validateDropTable();
+		case DROP_INDEX_CMD:
+			return validateDropIndex();
+		case DISPLAY_TABLE_CMD:
+			return validateDisplayTable();*/
 	case INSERT_CMD:
 		return validateInsert();
 	case DELETE_CMD:
