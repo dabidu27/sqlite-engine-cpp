@@ -372,7 +372,7 @@ bool CommandParser::validateInsert()
 bool CommandParser::validateDeleteTable() {
 
 	std::string copy = this->command;
-	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")$)");
+	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")\s*$)");
 
 	if (std::regex_match(copy, deleteTableRegex)) {
 
@@ -404,7 +404,7 @@ bool CommandParser::validateSelect() {
 
 bool CommandParser::validateUpdate() {
 
-	std::regex updateRegex(R"(^\s*UPDATE\s+[A-Za-z_][A-Za-z0-9_]*\s+SET\s+[A-Za-z_][A-Za-z0-9_]*\s+=\s+\w+\s+WHERE\s+[A-Za-z_][A-Za-z0-9_]*\s+=\s+\w+\s*$)");
+	std::regex updateRegex(R"(^\s*UPDATE\s+[A-Za-z_][A-Za-z0-9_]*\s+SET\s+[A-Za-z_][A-Za-z0-9_]*\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")\s+WHERE\s+[A-Za-z_][A-Za-z0-9_]*\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")\s*$)");
 
 	if (std::regex_match(this->command, updateRegex)) {
 
