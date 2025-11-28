@@ -5,7 +5,8 @@ using namespace std;
 
 int main() {
 
-	string command = "UPDATE users SET age = 25 WHERE id = 1";
+	string command = "INSERT studenti VALUES (1,\"John\",\"1001\")s";
+
 	CommandParser parser(command);
 	CommandType type;
 
