@@ -21,5 +21,6 @@ int main() {
 	bool valid = parser.validateCommand();
 
 	return 0;
-	
+	// test test
+	//comment
 }
