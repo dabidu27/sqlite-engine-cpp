@@ -2,4 +2,9 @@
 #include <string>
 
 
-void toUpper(std::string& command);
+class StringUtils {
+
+	public:
+		static void toUpper(std::string& command);
+};
+

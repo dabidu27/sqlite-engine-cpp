@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "INSERT studenti VALUES (1,\"John\",\"1001\")s";
+	string command = "UPDATE studenti SET nume = \"Alice\", id = 4 WHERE id = 1";
 
 	CommandParser parser(command);
 	CommandType type;
@@ -15,9 +15,11 @@ int main() {
 	cout << endl;
 
 	int n_tokens = 0;
-	char** command_tokens = parser.tokenizeCommand(n_tokens);
+	parser.tokenizeCommand();
+	string* tokens = parser.getTokens();
+	n_tokens = parser.getNoTokens();
 	for (int i = 0; i < n_tokens; i++)
-		cout << endl << "Token " << i << ": " << command_tokens[i];
+		cout << endl << "Token " << i << ": " << tokens[i];
 
 	bool valid = parser.validateCommand();
 

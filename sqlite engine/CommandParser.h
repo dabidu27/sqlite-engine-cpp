@@ -7,22 +7,28 @@ class CommandParser {
 
 	private:
 		std::string command = "";
+		std::string* tokens = nullptr;
+		int n_tokens = 0;
 
 	public:
 
 		CommandParser(std::string command);
 		CommandType recognizeCommand();
-		char** tokenizeCommand(int& n_tokens);
+		void tokenizeCommand();
+		std::string* getTokens();
+		int getNoTokens();
 		bool validateCommand();
+		~CommandParser();
+
 
 	private:
 
 
-		bool validateCreateTable();
+		/*bool validateCreateTable();
 		bool validateCreateIndex();
 		bool validateDropTable();
 		bool validateDropIndex();
-		bool validateDisplayTable();
+		bool validateDisplayTable();*/
 		bool validateInsert();
 		bool validateDeleteTable();
 		bool validateSelect();
