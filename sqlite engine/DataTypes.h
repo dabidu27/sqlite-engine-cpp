@@ -4,11 +4,16 @@
 enum DataType {
     INTEGER,
     TEXT,
-    DATE,
-    REAL,
-    BOOLEAN,
-    BLOB,
+    FLOAT,
     UNKNOWN_DATA_TYPE
 };
 
-DataType getDataFromString(char* string_type);
+class DataValidator {
+
+    public:
+
+        static DataType getDataFromString(std::string string_type);
+        static bool validateInt(std::string value);
+        static bool validateFloat(std::string value);
+
+};
