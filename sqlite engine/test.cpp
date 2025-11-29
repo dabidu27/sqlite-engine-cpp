@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "UPDATE studenti SET nume = \"Alice\", id = 4 WHERE id = 1";
+	string command = "DISPLAY TABLE          studenti";
 
 	CommandParser parser(command);
 	CommandType type;

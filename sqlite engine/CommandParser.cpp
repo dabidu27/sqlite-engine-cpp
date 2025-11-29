@@ -72,7 +72,7 @@ void CommandParser::tokenizeCommand() {
 			i++;
 			continue;
 		}
-		if (this->command[i] == '"' || this->command[i] == '(' || this->command[i] == ')' || this->command[i] == ',' || this->command[i] == '=')
+		if (this->command[i] == '"' || this->command[i] == '(' || this->command[i] == ')' || this->command[i] == ',' || this->command[i] == '=' || this->command[i] == '\'')
 		{
 			if (!current_string.empty()) {
 				this->tokens[this->n_tokens] = current_string;
@@ -108,7 +108,7 @@ std::string* CommandParser::getTokens() {
 	std::string* copy = new std::string[this->n_tokens];
 	for (int i = 0; i < this->n_tokens; i++)
 		copy[i] = this->tokens[i];
-	return tokens;
+	return copy;
 
 }
 
@@ -116,80 +116,27 @@ int CommandParser::getNoTokens() {
 	return this->n_tokens;
 }
 
-//bool CommandParser::validateCreateTable() {
-//
-//	std::string copy = this->command;
-//	int n_tokens = 0;
-//	char** tokens = tokenizeCommand(n_tokens);
-//
-//	if (n_tokens < 4) {
-//		std::cout << std::endl << "Error: Invalid CREATE TABLE syntax.";
-//		return false;
-//	}
-//
-//	if (strcmp(tokens[0], "CREATE") != 0 || strcmp(tokens[1], "TABLE") != 0) {
-//
-//		std::cout << std::endl << "Error: Invalid CREATE TABLE syntax";
-//		return false;
-//	}
-//
-//	if (strchr(tokens[2], '(') != nullptr || strchr(tokens[2], ')') != nullptr || strchr(tokens[2], ',') != nullptr) {
-//
-//		std::cout << std::endl << "Error: Invalid table name";
-//		return false;
-//	}
-//
-//	if (strchr(tokens[3], '(') == nullptr || strchr(tokens[n_tokens - 1], ')') == nullptr) {
-//
-//		std::cout << std::endl << "Error: Missing paranthesis";
-//		return false;
-//	}
-//
-//	for (int i = 3; i < n_tokens - 1; i = i + 2) {
-//
-//		if (strchr(tokens[i], ',') != nullptr) {
-//			std::cout << std::endl << "Error: Unexpected comma";
-//			return false;
-//		}
-//	}
-//
-//	int n_columns = 0;
-//	for (int i = 4; i < n_tokens - 1; i = i + 2) {
-//
-//		n_columns++;
-//		if (strchr(tokens[i], ',') == nullptr) {
-//			std::cout << std::endl << "Error: Expected comma";
-//			return false;
-//		}
-//
-//		DataType type = getDataFromString(tokens[i]);
-//		if (type == UNKNOWN_DATA_TYPE) {
-//			std::cout << std::endl << "Error: Unknown data type";
-//			return false;
-//		}
-//	}
-//
-//	DataType type = getDataFromString(tokens[n_tokens - 1]);
-//	if (type == UNKNOWN_DATA_TYPE) {
-//		std::cout << std::endl << "Error: Unknown data type";
-//		return false;
-//	}
-//	else
-//		n_columns++;
-//
-//
-//	std::cout << std::endl << "Create table command looks valid";
-//	std::cout << std::endl << "Table name: " << tokens[2];
-//	std::cout << std::endl << "Number of columns: " << n_columns;
-//
-//	for (int i = 0; i < n_tokens; i++) {
-//		delete[] tokens[i];
-//	}
-//	delete[] tokens;
-//
-//	return true;
-//}
-//
+bool CommandParser::validateCreateTable() {
+
+	std::regex createTablePattern(
+		R"(^\s*CREATE\s+TABLE\s+[A-Za-z_]\w*)"
+		R"((?:\s+IF\s+NOT\s+EXISTS)?\s*)"
+		R"(\(\s*\([A-Za-z_]\w*\s*,\s*(INTEGER|TEXT|FLOAT)\s*,\s*\d+\s*,\s*(\d+|'[^']*')\s*\))"
+		R"((?:\s*,\s*\([A-Za-z_]\w*\s*,\s*(INTEGER|TEXT|FLOAT)\s*,\s*\d+\s*,\s*(\d+|'[^']*')\s*\))*\s*\)$)"
+	);
+
+	if (std::regex_match(this->command, createTablePattern)) {
+
+		std::cout << std::endl << "CREATE TABLE command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Invalid CREATE TABLE syntax";
+		return false;
+	}
+	
+}
+
 //bool CommandParser::validateCreateIndex() {
 //
 //	std::string copy = this->command;
@@ -250,40 +197,19 @@ int CommandParser::getNoTokens() {
 //
 //}
 //
-//bool CommandParser::validateDropTable() {
-//
-//	std::string copy = this->command;
-//	int n_tokens = 0;
-//	char** tokens = tokenizeCommand(n_tokens);
-//
-//	if (n_tokens < 3) {
-//
-//		std::cout << std::endl << "Error: Invalid DROP TABLE syntax";
-//		return false;
-//	}
-//
-//	if (strcmp(tokens[0], "DROP") != 0 || strcmp(tokens[1], "TABLE") != 0) {
-//
-//		std::cout << std::endl << "Error: Invalid DROP TABLE syntax";
-//		return false;
-//	}
-//
-//	char* table_name = tokens[2];
-//	if (strlen(table_name) == 0 || strchr(table_name, '(') != nullptr || strchr(table_name, ')') != nullptr) {
-//
-//		std::cout << std::endl << "Error: Invalid or missing table name";
-//		return false;
-//	}
-//
-//	std::cout << std::endl << "DROP TABLE command looks valid";
-//	std::cout << std::endl << "Table name: " << table_name;
-//
-//	for (int i = 0; i < n_tokens; i++)
-//		delete[] tokens[i];
-//	delete[] tokens;
-//
-//	return true;
-//}
+bool CommandParser::validateDropTable() {
+
+	std::regex dropTablePattern(R"(^\s*DROP\s+TABLE\s+\w+\s*$)");
+
+	if (std::regex_match(this->command,dropTablePattern)) {
+		std::cout << std::endl << "DROP TABLE command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Invalid DROP TABLE syntax";
+		return false;
+	}
+}
 //
 //bool CommandParser::validateDropIndex() {
 //
@@ -317,41 +243,20 @@ int CommandParser::getNoTokens() {
 //	return true;
 //}
 //
-//bool CommandParser::validateDisplayTable() {
-//
-//	std::string copy = this->command;
-//	int n_tokens = 0;
-//	char** tokens = tokenizeCommand(n_tokens);
-//
-//	if (n_tokens < 3) {
-//		std::cout << std::endl << "Error: Invalid DISPLAY TABLE syntax";
-//		return false;
-//	}
-//
-//	if (strcmp(tokens[0], "DISPLAY") != 0 || strcmp(tokens[1], "TABLE") != 0) {
-//		std::cout << std::endl << "Error: Invalid DISPLAY TABLE syntax";
-//		return false;
-//	}
-//
-//	char* table_name = tokens[2];
-//	if (strlen(table_name) == 0 ||
-//		strchr(table_name, '(') != nullptr ||
-//		strchr(table_name, ')') != nullptr ||
-//		strchr(table_name, ',') != nullptr) {
-//
-//		std::cout << std::endl << "Error: Invalid or missing table name";
-//		return false;
-//	}
-//
-//	std::cout << std::endl << "DISPLAY TABLE command looks valid";
-//	std::cout << std::endl << "Table name: " << table_name;
-//
-//	for (int i = 0; i < n_tokens; i++)
-//		delete[] tokens[i];
-//	delete[] tokens;
-//
-//	return true;
-//}
+bool CommandParser::validateDisplayTable() {
+
+	std::regex displayTablePattern(R"(^\s*DISPLAY\s+TABLE\s+\w+\s*$)");
+
+	if (std::regex_match(this->command, displayTablePattern))
+	{
+		std::cout << std::endl << "DISPLAY TABLE command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Invalid DISPLAY TABLE syntax";
+		return false;
+	}
+}
 bool CommandParser::validateInsert()
 {
 	std::string copy = this->command;
@@ -425,29 +330,29 @@ bool CommandParser::validateCommand() {
 
 	switch (type) {
 
-		/*case CREATE_TABLE_CMD:
+		case CREATE_TABLE_CMD:
 			return validateCreateTable();
-		case CREATE_INDEX_CMD:
-			return validateCreateIndex();
+		//case CREATE_INDEX_CMD:
+			//return validateCreateIndex();
 		case DROP_TABLE_CMD:
 			return validateDropTable();
-		case DROP_INDEX_CMD:
-			return validateDropIndex();
+		//case DROP_INDEX_CMD:
+			//return validateDropIndex();
 		case DISPLAY_TABLE_CMD:
-			return validateDisplayTable();*/
-	case INSERT_CMD:
-		return validateInsert();
-	case DELETE_CMD:
-		return validateDeleteTable();
-	case SELECT_CMD:
-		return validateSelect();
-	case UPDATE_CMD:
-		return validateUpdate();
+			return validateDisplayTable();
+		case INSERT_CMD:
+			return validateInsert();
+		case DELETE_CMD:
+			return validateDeleteTable();
+		case SELECT_CMD:
+			return validateSelect();
+		case UPDATE_CMD:
+			return validateUpdate();
 
 
-	default:
-		std::cout << std::endl << "Error: Unknown or unsupported command";
-		return false;
+		default:
+			std::cout << std::endl << "Error: Unknown or unsupported command";
+			return false;
 	}
 
 }

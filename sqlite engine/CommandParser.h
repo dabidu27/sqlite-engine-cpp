@@ -24,11 +24,11 @@ class CommandParser {
 	private:
 
 
-		/*bool validateCreateTable();
-		bool validateCreateIndex();
+		bool validateCreateTable();
+		//bool validateCreateIndex();
 		bool validateDropTable();
-		bool validateDropIndex();
-		bool validateDisplayTable();*/
+		//bool validateDropIndex();
+		bool validateDisplayTable();
 		bool validateInsert();
 		bool validateDeleteTable();
 		bool validateSelect();
