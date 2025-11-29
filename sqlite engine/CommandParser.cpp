@@ -12,7 +12,7 @@
 CommandParser::CommandParser(const std::string command) {
 
 	this->command = command;
-	this->tokens = new std::string[100];
+	this->tokens = nullptr;
 	this->n_tokens = 0;
 }
 
@@ -56,6 +56,7 @@ void CommandParser::tokenizeCommand() {
 	//if between " " or a number or underscore add as a token
 
 	StringUtils::toUpper(this->command);
+	std::string* copy = new std::string[100];
 	int i = 0;
 	int z = 0;
 	std::string current_string = "";
@@ -65,7 +66,7 @@ void CommandParser::tokenizeCommand() {
 		if (this->command[i] == ' ')
 		{
 			if (!current_string.empty()) {
-				this->tokens[this->n_tokens] = current_string;
+				copy[this->n_tokens] = current_string;
 				this->n_tokens++;
 				current_string.clear();
 			}
@@ -75,11 +76,11 @@ void CommandParser::tokenizeCommand() {
 		if (this->command[i] == '"' || this->command[i] == '(' || this->command[i] == ')' || this->command[i] == ',' || this->command[i] == '=' || this->command[i] == '\'')
 		{
 			if (!current_string.empty()) {
-				this->tokens[this->n_tokens] = current_string;
+				copy[this->n_tokens] = current_string;
 				this->n_tokens++;
 				current_string.clear();
 			}
-			this->tokens[this->n_tokens] = std::string(1, this->command[i]);
+			copy[this->n_tokens] = std::string(1, this->command[i]);
 			this->n_tokens++;
 
 			i++;
@@ -96,11 +97,15 @@ void CommandParser::tokenizeCommand() {
 	}
 
 	if (!current_string.empty()) {
-		this->tokens[this->n_tokens] = current_string;
+		copy[this->n_tokens] = current_string;
 		this->n_tokens++;
 		current_string.clear();
 	}
 
+	this->tokens = new std::string[this->n_tokens];
+	for (int i = 0; i < this->n_tokens; i++)
+		this->tokens[i] = copy[i];
+	delete[] copy;
 }
 
 std::string* CommandParser::getTokens() {

@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-	string command = "DISPLAY TABLE          studenti";
+	string command = "CREATE TABLE students IF NOT EXISTS ((id, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
 
 	CommandParser parser(command);
 	CommandType type;
@@ -21,6 +21,7 @@ int main() {
 	for (int i = 0; i < n_tokens; i++)
 		cout << endl << "Token " << i << ": " << tokens[i];
 
+	delete[] tokens;
 	bool valid = parser.validateCommand();
 
 	return 0;
