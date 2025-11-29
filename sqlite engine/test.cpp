@@ -2,9 +2,11 @@
 using namespace std;
 #include "CommandParser.h"
 #include "CommandType.h"
+#include "Columns.h"
 
 int main() {
 
+	//TEST COMMAND VALIDATION
 	string command = "CREATE TABLE students IF NOT EXISTS ((id, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
 
 	CommandParser parser(command);
@@ -23,6 +25,13 @@ int main() {
 
 	delete[] tokens;
 	bool valid = parser.validateCommand();
+
+	//TEST COLUMNS CLASS
+
+	Columns column = Columns("id", "INTEGER", 1000, "0");
+	cout << endl << column.getName() << endl << column.getType() << endl << column.getSize() << endl << column.getDefaultValue();
+
+
 
 	return 0;
 	

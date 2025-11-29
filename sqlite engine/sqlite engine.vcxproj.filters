@@ -41,5 +41,11 @@
     <ClCompile Include="DataTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Columns.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Columns.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,8 +21,10 @@ void Columns::setSize(int size) {
 	this->size = size;
 }
 
-void Columns::setType(DataType type) {
+void Columns::setType(std::string type_string) { //the data type will be taken from the command string and will be passed as a string, and converted by the setter 
+	//using a static method from DataValidator into a datatype from the enum
 
+	DataType type = DataValidator::getDataFromString(type_string);
 	if (type != INTEGER && type != FLOAT && type != TEXT)
 		this->type = UNKNOWN_DATA_TYPE;
 	else
@@ -79,10 +81,10 @@ std::string Columns::getDefaultValue() {
 }
 
 
-Columns::Columns(std::string name, DataType type, int size, std::string defaultValue) {
+Columns::Columns(std::string name, std::string type_string, int size, std::string defaultValue) {
 
 	this->setName(name);
-	this->setType(type);
+	this->setType(type_string);
 	this->setSize(size);
 	this->setDefaultValue(defaultValue);
 }

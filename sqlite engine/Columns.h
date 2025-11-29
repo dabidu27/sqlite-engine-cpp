@@ -19,7 +19,7 @@ class Columns {
 		static const int NAME_MIN_SIZE;
 
 		void setName(std::string name);
-		void setType(DataType type);
+		void setType(std::string type_string);
 		void setSize(int size);
 		void setDefaultValue(std::string defaultValue);
 
@@ -29,5 +29,5 @@ class Columns {
 		int getSize();
 		std::string getDefaultValue();
 
-		Columns(std::string name, DataType type, int size, std::string defaultValue);
+		Columns(std::string name, std::string type_string, int size, std::string defaultValue);
 };
