@@ -94,3 +94,40 @@ Columns::Columns(std::string name, std::string type_string, int size, std::strin
 	this->setSize(size);
 	this->setDefaultValue(defaultValue);
 }
+
+Columns::Columns(const Columns& other) {
+	this->name = other.name;
+	this->type = other.type;
+	this->size = other.size;
+	this->defaultValue = other.defaultValue;
+}
+
+Columns& Columns::operator=(const Columns& other) {
+	if (this != &other) {
+		this->name = other.name;
+		this->type = other.type;
+		this->size = other.size;
+		this->defaultValue = other.defaultValue;
+	}
+	return *this;
+}
+
+const char* dataTypeConvertr(DataType t) {
+	switch (t) {
+		case INTEGER: 
+			return "INTEGER";
+		case FLOAT:  
+			return "FLOAT";
+		case TEXT:
+			return "TEXT";
+		default:
+			return "UNKNOWN";
+	}
+}
+
+std::ostream& operator<<(std::ostream& os, const Columns& col) {
+	os << col.name << " " << dataTypeConvertr(col.type) << "\n";
+	os << "Size: " << col.size << "\n";
+	os << "Default: " << col.defaultValue << "\n";
+	return os;
+}

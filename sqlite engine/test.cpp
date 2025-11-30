@@ -44,7 +44,8 @@ int main() {
 				Columns* columns = table.getColumns();
 				for (int i = 0; i < table.getNoColumns(); i++)
 				{
-					cout << columns[i].getName() << " " << columns[i].getType() << " " << columns[i].getSize() << " " << columns[i].getDefaultValue();
+					//cout << columns[i].getName() << " " << columns[i].getType() << " " << columns[i].getSize() << " " << columns[i].getDefaultValue();
+					cout << columns[i] << endl;
 					cout << endl;
 				}
 
@@ -60,6 +61,4 @@ int main() {
 
 	}
 	return 0;
-	// test test
-	//comment
 }
