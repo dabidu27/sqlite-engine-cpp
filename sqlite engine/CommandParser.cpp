@@ -26,6 +26,7 @@ CommandType CommandParser::recognizeCommand() {
 		copy.erase(0, 1); //erases one character starting from position 0
 
 	//.find() returns the position at which a substring begins
+	// comment
 	if (copy.find("CREATE TABLE") == 0)
 		return CREATE_TABLE_CMD;
 	else if (copy.find("CREATE INDEX") == 0)

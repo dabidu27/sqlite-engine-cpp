@@ -3,9 +3,6 @@
 #include "DataTypes.h"
 
 
-
-
-
 class Columns {
 
 	std::string name = "";
@@ -31,4 +28,9 @@ class Columns {
 
 		Columns();
 		Columns(std::string name, std::string type_string, int size, std::string defaultValue);
+		Columns(const Columns& other);
+		Columns& operator=(const Columns& other);
+
+		// main output stream testgi
+		friend std::ostream& operator<<(std::ostream& os, const Columns& col);
 };
