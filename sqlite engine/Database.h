@@ -12,5 +12,6 @@ class Database {
 		void addTable(Table table);
 		Table* getTables();
 		int getNoTables();
+		void display();
 		~Database();
 };

@@ -43,15 +43,7 @@ int main() {
 			case CREATE_TABLE_CMD:
 			{
 				Table table = Table(tokens, n_tokens);
-				cout << endl << table.getTableName() << " " << table.getNoColumns() << endl;
-				Columns* columns = table.getColumns();
-				for (int i = 0; i < table.getNoColumns(); i++)
-				{
-					cout << columns[i] << endl;
-					cout << endl;
-				}
 				db.addTable(table);
-				delete[] columns;
 				break;
 			}
 
@@ -63,22 +55,43 @@ int main() {
 
 	}
 
+	delete[] tokens;
+	
+	command = "CREATE TABLE students2 IF NOT EXISTS ((index, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
+	parser = CommandParser(command);
+	n_tokens = 0;
+	parser.tokenizeCommand();
+	tokens = parser.getTokens();
+	n_tokens = parser.getNoTokens();
+	cout << endl << n_tokens;
+	for (int i = 0; i < n_tokens; i++)
+		cout << endl << "Token " << i << ": " << tokens[i];
 
-	//TEST DATABASE CLASS
-	Table* tables = db.getTables();
-	int no_tables = db.getNoTables();
-	for (int i = 0; i < no_tables; i++){
-		cout << endl << tables[i].getTableName() << " " << tables[i].getNoColumns() << endl;
-		Columns* columns = tables[i].getColumns();
-		for (int j = 0; j < tables[i].getNoColumns(); j++)
+	valid = parser.validateCommand();
+
+	cout << endl;
+
+	if (valid) {
+
+		switch (type) {
+
+		case CREATE_TABLE_CMD:
 		{
-			cout << columns[j] << endl;
-			cout << endl;
+			Table table = Table(tokens, n_tokens);
+			db.addTable(table);
+			break;
 		}
-		delete[] columns;
-	}
 
-	
-	
+		default:
+
+			cout << endl << "Command not suported yet";
+			break;
+		}
+
+	}
+	delete[] tokens;
+
+	db.display();
+
 	return 0;
 }
