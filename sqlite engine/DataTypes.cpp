@@ -56,3 +56,16 @@ bool DataValidator::validateFloat(std::string value) {
 	return true;
 
 }
+
+std::string DataValidator::dataTypeConvertor(DataType t) {
+	switch (t) {
+	case INTEGER:
+		return "INTEGER";
+	case FLOAT:
+		return "FLOAT";
+	case TEXT:
+		return "TEXT";
+	default:
+		return "UNKNOWN";
+	}
+}

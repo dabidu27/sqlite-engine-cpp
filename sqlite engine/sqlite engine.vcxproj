@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="CommandType.h" />
+    <ClInclude Include="Database.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Columns.cpp" />
     <ClCompile Include="CommandParser.cpp" />
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataTypes.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="Columns.h" />

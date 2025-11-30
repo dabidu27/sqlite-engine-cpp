@@ -15,5 +15,6 @@ class DataValidator {
         static DataType getDataFromString(std::string string_type);
         static bool validateInt(std::string value);
         static bool validateFloat(std::string value);
+        static std::string dataTypeConvertor(DataType type);
 
 };

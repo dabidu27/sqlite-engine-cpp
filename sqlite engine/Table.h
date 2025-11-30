@@ -1,11 +1,6 @@
 #pragma once
 #include "Columns.h"
 
-
-
-
-
-
 class Table {
 private:
 		std::string tableName = "";
@@ -16,7 +11,7 @@ public:
 	Table();
 	Table(std::string* tokens, int n_tokens);
 	Table(const Table& other);
-	Table& operator=(const Table& other);
+	void operator=(const Table& other);
 
 	void setTableName(std::string* tokens);
 	void setColumns(std::string* tokens, int n_tokens);

@@ -1,9 +1,6 @@
-#pragma once
 #include "Columns.h"
 #include "Table.h"
 #include <iostream>
-
-
 
 
 void Table::setTableName(std::string* tokens) {
@@ -78,6 +75,13 @@ void Table::setColumns(std::string* tokens, int n_tokens) {
 	delete[] copy;
 }
 
+Table::Table() {
+
+	this->tableName = "";
+	this->n_columns = 0;
+	this->columns = nullptr;
+}
+
 Table::Table(std::string* tokens, int n_tokens) {
 
 	this->setTableName(tokens);
@@ -98,25 +102,25 @@ Table::Table(const Table& other)
 	else this->columns = nullptr;
 }
 
-Table& Table::operator=(const Table& other) 
-{
-	if (this != &other) {
-		if (this->columns != nullptr) {
-			delete[] this->columns;
-			this->columns = nullptr;
-		}
-
-		this->tableName = other.tableName;
-		this->n_columns = other.n_columns;
-		if (other.columns != nullptr) 
-		{
-			this->columns = new Columns[this->n_columns];
-			for (int i = 0; i < this->n_columns; i++)
-				this->columns[i] = other.columns[i];
-		}
-		else this->columns = nullptr;
+void Table::operator=(const Table& other) {
+	
+	if (this == &other) {
+		return;
 	}
-	return *this;
+
+	if (this->columns != nullptr) {
+		delete[] this->columns;
+		this->columns = nullptr;
+	}
+
+	
+	this->tableName = other.tableName;
+	this->n_columns = other.n_columns;
+
+	this->columns = new Columns[this->n_columns];
+	for (int i = 0; i < this->n_columns; i++) 
+		this->columns[i] = other.columns[i];
+
 }
 
 std::string Table::getTableName() {

@@ -5,8 +5,11 @@ using namespace std;
 #include "CommandType.h"
 #include "Columns.h"
 #include "Table.h"
+#include "Database.h";
 
 int main() {
+
+	Database db;
 
 	//TEST COMMAND VALIDATION
 	string command = "CREATE TABLE students IF NOT EXISTS ((id, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
@@ -44,11 +47,10 @@ int main() {
 				Columns* columns = table.getColumns();
 				for (int i = 0; i < table.getNoColumns(); i++)
 				{
-					//cout << columns[i].getName() << " " << columns[i].getType() << " " << columns[i].getSize() << " " << columns[i].getDefaultValue();
 					cout << columns[i] << endl;
 					cout << endl;
 				}
-
+				db.addTable(table);
 				delete[] columns;
 				break;
 			}
@@ -60,5 +62,23 @@ int main() {
 		}
 
 	}
+
+
+	//TEST DATABASE CLASS
+	Table* tables = db.getTables();
+	int no_tables = db.getNoTables();
+	for (int i = 0; i < no_tables; i++){
+		cout << endl << tables[i].getTableName() << " " << tables[i].getNoColumns() << endl;
+		Columns* columns = tables[i].getColumns();
+		for (int j = 0; j < tables[i].getNoColumns(); j++)
+		{
+			cout << columns[j] << endl;
+			cout << endl;
+		}
+		delete[] columns;
+	}
+
+	
+	
 	return 0;
 }
