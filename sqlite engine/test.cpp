@@ -29,6 +29,8 @@ int main() {
 	//validate comand syntax
 	bool valid = parser.validateCommand();
 
+	cout << endl;
+
 	//Create table command to columns pipeline
 	
 	if (valid) {

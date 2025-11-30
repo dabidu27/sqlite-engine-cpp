@@ -1,6 +1,7 @@
 #pragma once
 #include "Columns.h"
 #include "Table.h"
+#include <iostream>
 
 
 
@@ -81,6 +82,7 @@ Table::Table(std::string* tokens, int n_tokens) {
 
 	this->setTableName(tokens);
 	this->setColumns(tokens, n_tokens);
+	std::cout << std::endl << "Table Created";
 }
 
 
