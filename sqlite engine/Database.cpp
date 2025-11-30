@@ -38,24 +38,26 @@ int Database::getNoTables() {
 	return this->noTables;
 }
 
-void Database::display() {
-
-	for (int i = 0; i < this-> noTables; i++) {
-		std::cout << std::endl << tables[i].getTableName() << " " << tables[i].getNoColumns() << std::endl;
-		Columns* columns = tables[i].getColumns();
-		for (int j = 0; j < tables[i].getNoColumns(); j++)
-		{
-			std::cout << columns[j] << std::endl;
-			std::cout << std::endl;
-		}
-		delete[] columns;
-	}
-}
 Database::~Database() {
 
 	if (this->tables != nullptr) {
 
 		delete[] this->tables;
 		this->tables = nullptr;
+	}
+}
+
+void operator<< (std::ostream& console, Database& db) {
+
+	Table* tables = db.getTables();
+	for (int i = 0; i < db.getNoTables(); i++) {
+		console << std::endl << tables[i].getTableName() << " " << tables[i].getNoColumns() << std::endl;
+		Columns* columns = tables[i].getColumns();
+		for (int j = 0; j < tables[i].getNoColumns(); j++)
+		{
+			console << columns[j] << std::endl;
+			console << std::endl;
+		}
+		delete[] columns;
 	}
 }

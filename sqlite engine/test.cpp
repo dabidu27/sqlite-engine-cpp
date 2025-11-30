@@ -58,14 +58,12 @@ int main() {
 	delete[] tokens;
 	
 	command = "CREATE TABLE students2 IF NOT EXISTS ((index, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
+
 	parser = CommandParser(command);
 	n_tokens = 0;
 	parser.tokenizeCommand();
 	tokens = parser.getTokens();
 	n_tokens = parser.getNoTokens();
-	cout << endl << n_tokens;
-	for (int i = 0; i < n_tokens; i++)
-		cout << endl << "Token " << i << ": " << tokens[i];
 
 	valid = parser.validateCommand();
 
@@ -91,7 +89,7 @@ int main() {
 	}
 	delete[] tokens;
 
-	db.display();
+	cout << db;
 
 	return 0;
 }

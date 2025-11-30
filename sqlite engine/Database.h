@@ -15,3 +15,5 @@ class Database {
 		void display();
 		~Database();
 };
+
+void operator<< (std::ostream& console, Database& db);
