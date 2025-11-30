@@ -85,6 +85,39 @@ Table::Table(std::string* tokens, int n_tokens) {
 	std::cout << std::endl << "Table Created";
 }
 
+Table::Table(const Table& other)
+{
+	this->tableName = other.tableName;
+	this->n_columns = other.n_columns;
+	if (other.columns != nullptr) 
+	{
+		this->columns = new Columns[this->n_columns];
+		for (int i = 0; i < this->n_columns; i++)
+			this->columns[i] = other.columns[i];
+	}
+	else this->columns = nullptr;
+}
+
+Table& Table::operator=(const Table& other) 
+{
+	if (this != &other) {
+		if (this->columns != nullptr) {
+			delete[] this->columns;
+			this->columns = nullptr;
+		}
+
+		this->tableName = other.tableName;
+		this->n_columns = other.n_columns;
+		if (other.columns != nullptr) 
+		{
+			this->columns = new Columns[this->n_columns];
+			for (int i = 0; i < this->n_columns; i++)
+				this->columns[i] = other.columns[i];
+		}
+		else this->columns = nullptr;
+	}
+	return *this;
+}
 
 std::string Table::getTableName() {
 

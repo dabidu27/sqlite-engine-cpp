@@ -12,11 +12,14 @@ private:
 		Columns* columns = nullptr;
 		int n_columns = 0;
 public:
+
+	Table();
+	Table(std::string* tokens, int n_tokens);
+	Table(const Table& other);
+	Table& operator=(const Table& other);
+
 	void setTableName(std::string* tokens);
 	void setColumns(std::string* tokens, int n_tokens);
-
-	Table(std::string* tokens, int n_tokens);
-
 
 	std::string getTableName();
 	int getNoColumns();
