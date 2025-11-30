@@ -80,7 +80,13 @@ std::string Columns::getDefaultValue() {
 	return this->defaultValue;
 }
 
-
+Columns::Columns() {
+	
+	this->name = "";
+	this->type = INTEGER;
+	this->size = 0;
+	this->defaultValue = "";
+}
 Columns::Columns(std::string name, std::string type_string, int size, std::string defaultValue) {
 
 	this->setName(name);

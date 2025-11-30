@@ -29,5 +29,6 @@ class Columns {
 		int getSize();
 		std::string getDefaultValue();
 
+		Columns();
 		Columns(std::string name, std::string type_string, int size, std::string defaultValue);
 };

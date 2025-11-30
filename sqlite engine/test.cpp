@@ -4,6 +4,7 @@ using namespace std;
 #include "CommandParser.h"
 #include "CommandType.h"
 #include "Columns.h"
+#include "Table.h"
 
 int main() {
 
@@ -14,17 +15,17 @@ int main() {
 	CommandType type;
 
 	type = parser.recognizeCommand();
-	cout << endl << "Command type: " << type;
-	cout << endl;
 
 	//get tokens
 	int n_tokens = 0;
 	parser.tokenizeCommand();
 	string* tokens = parser.getTokens();
 	n_tokens = parser.getNoTokens();
-	//see tokens
+
+	//see tokens - optional
 	for (int i = 0; i < n_tokens; i++)
 		cout << endl << "Token " << i << ": " << tokens[i];
+
 	//validate comand syntax
 	bool valid = parser.validateCommand();
 
@@ -32,57 +33,30 @@ int main() {
 	
 	if (valid) {
 
-		string* values = new string[4];
-		int j = 0;
-		string table_name = tokens[2];
-		int i = 3;
-		if (tokens[i] == "IF")
-			i = 6;
-		while (i < n_tokens) {
+		switch (type) {
 
-			if (tokens[i] == "(" && tokens[i + 1] == "(") {
-				i = i + 2;
-				continue;
-			}
-			while (tokens[i] != ")") {
-				
-				if (tokens[i] != "," && tokens[i] != "'" && tokens[i] != "(" && j < 4)
-				{
-					values[j] = tokens[i];
-					j++;
-				}
-				if (tokens[i] == "'" && tokens[i + 1] == "'" && j < 4)
-				{
-					values[j] = "";
-					j++;
-	
-				}
-				i++;
-			}
-			
-			if (tokens[i] == ")")
+			case CREATE_TABLE_CMD:
 			{
-
-				if (j > 0)
+				Table table = Table(tokens, n_tokens);
+				cout << endl << table.getTableName() << " " << table.getNoColumns() << endl;
+				Columns* columns = table.getColumns();
+				for (int i = 0; i < table.getNoColumns(); i++)
 				{
-					string column_name = values[0];
-					string data_type = values[1];
-					int size = stoi(values[2]);
-					string default_value = values[3];
-					Columns column = Columns(column_name, data_type, size, default_value);
+					cout << columns[i].getName() << " " << columns[i].getType() << " " << columns[i].getSize() << " " << columns[i].getDefaultValue();
 					cout << endl;
-					cout << endl << column.getName() << endl << column.getType() << endl << column.getSize() << endl << column.getDefaultValue();
 				}
-			
-				delete[] values;
-				values = new string[4];
-				j = 0;
-				i++;
-				continue;
-			}
-		}
-	}
 
+				delete[] columns;
+				break;
+			}
+
+			default:
+	
+				cout << endl << "Command not suported yet";
+				break;
+		}
+
+	}
 	return 0;
 	
 }
