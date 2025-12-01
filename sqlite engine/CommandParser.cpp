@@ -8,12 +8,15 @@
 #include <string>
 #include "DataTypes.h"
 #include <regex>
+#include "Table.h"
 
 CommandParser::CommandParser(const std::string command) {
 
 	this->command = command;
 	this->tokens = nullptr;
 	this->n_tokens = 0;
+	this->type = UNKNOWN_CMD;
+	this->valid = false;
 }
 
 CommandType CommandParser::recognizeCommand() {
@@ -361,6 +364,37 @@ bool CommandParser::validateCommand() {
 			return false;
 	}
 
+}
+
+void CommandParser::runCommand(Database& db) {
+
+	this->type = this->recognizeCommand();
+	this->tokenizeCommand();
+	this->valid = this->validateCommand();
+	if(this->valid) {
+
+		switch (this->type) {
+
+		case CREATE_TABLE_CMD:
+		{
+			Table table = Table(tokens, n_tokens);
+			db.addTable(table);
+			break;
+		}
+
+		case DROP_TABLE_CMD:
+		{
+			db.deleteTable(tokens[2]);
+			break;
+		}
+
+		default:
+
+			std::cout << std::endl << "Command not suported yet";
+			break;
+		}
+
+	}
 }
 
 CommandParser::~CommandParser() {

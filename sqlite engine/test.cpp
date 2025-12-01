@@ -11,136 +11,25 @@ int main() {
 
 	Database db;
 
-	//TEST COMMAND VALIDATION
 	string command = "CREATE TABLE students IF NOT EXISTS ((id, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
 
 	CommandParser parser(command);
-	CommandType type;
+	parser.runCommand(db);
 
-	type = parser.recognizeCommand();
-
-	//get tokens
-	int n_tokens = 0;
-	parser.tokenizeCommand();
-	string* tokens = parser.getTokens();
-	n_tokens = parser.getNoTokens();
-
-	//see tokens - optional
-	for (int i = 0; i < n_tokens; i++)
-		cout << endl << "Token " << i << ": " << tokens[i];
-
-	//validate comand syntax
-	bool valid = parser.validateCommand();
-
-	cout << endl;
-
-	//Create table command to columns pipeline
-	
-	if (valid) {
-
-		switch (type) {
-
-			case CREATE_TABLE_CMD:
-			{
-				Table table = Table(tokens, n_tokens);
-				db.addTable(table);
-				break;
-			}
-
-			case DROP_TABLE_CMD:
-			{
-				db.deleteTable(tokens[2]);
-				break;
-			}
-
-			default:
-	
-				cout << endl << "Command not suported yet";
-				break;
-		}
-
-	}
-
-	delete[] tokens;
-	
 	command = "CREATE TABLE students2 IF NOT EXISTS ((index, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
 
-	parser = CommandParser(command);
-	n_tokens = 0;
-	parser.tokenizeCommand();
-	tokens = parser.getTokens();
-	n_tokens = parser.getNoTokens();
-
-	valid = parser.validateCommand();
-
 	cout << endl;
 
-	if (valid) {
-
-		switch (type) {
-
-		case CREATE_TABLE_CMD:
-		{
-			Table table = Table(tokens, n_tokens);
-			db.addTable(table);
-			break;
-		}
-
-		case DROP_TABLE_CMD:
-		{
-			db.deleteTable(tokens[2]);
-			break;
-		}
-
-		default:
-
-			cout << endl << "Command not suported yet";
-			break;
-		}
-
-	}
-	delete[] tokens;
-
+	parser = CommandParser(command);
+	parser.runCommand(db);
+	cout << endl << "Now DB looks like this: " << endl;
 	cout << db;
 
 	command = "DROP TABLE students2";
 
 	parser = CommandParser(command);
-	type = parser.recognizeCommand();
-	n_tokens = 0;
-	parser.tokenizeCommand();
-	tokens = parser.getTokens();
-	n_tokens = parser.getNoTokens();
-
-	valid = parser.validateCommand();
-
-	cout << endl;
-
-	if (valid) {
-
-		switch (type) {
-
-		case CREATE_TABLE_CMD:
-		{
-			Table table = Table(tokens, n_tokens);
-			db.addTable(table);
-			break;
-		}
-
-		case DROP_TABLE_CMD:
-		{
-			db.deleteTable(tokens[2]);
-			break;
-		}
-
-		default:
-
-			cout << endl << "Command not suported yet";
-			break;
-		}
-
-	}
-	delete[] tokens;
+	parser.runCommand(db);
+	cout << endl << "Now DB looks like this: " << endl;
 	cout << db;
 
 	return 0;
