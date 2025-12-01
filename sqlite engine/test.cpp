@@ -4,33 +4,28 @@
 #include "CommandType.h"
 #include "Columns.h"
 #include "Table.h"
-#include "Database.h";
+#include "Database.h"
 using namespace std;
 
 int main() {
 
 	Database db;
 
-	string command = "CREATE TABLE students IF NOT EXISTS ((id, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
+	string command = "";
+	CommandParser parser = CommandParser("");
+	while (true) {
 
-	CommandParser parser(command);
-	parser.runCommand(db);
+		cout << endl << "Enter command (Exit to stop): ";
+		getline(cin, command);
 
-	command = "CREATE TABLE students2 IF NOT EXISTS ((index, integer, 1000, 0), (nume, text, 128, ''), (grupa, text,50,'1000'))";
+		if (command == "Exit")
+			break;
 
-	cout << endl;
-
-	parser = CommandParser(command);
-	parser.runCommand(db);
-	cout << endl << "Now DB looks like this: " << endl;
-	cout << db;
-
-	command = "DROP TABLE students2";
-
-	parser = CommandParser(command);
-	parser.runCommand(db);
-	cout << endl << "Now DB looks like this: " << endl;
-	cout << db;
+		parser = CommandParser(command);
+		parser.runCommand(db);
+		cout << endl << "Now DB looks like this: " << endl;
+		cout << db;
+	}
 
 	return 0;
 }
