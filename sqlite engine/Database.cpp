@@ -40,6 +40,14 @@ int Database::getNoTables() {
 
 void Database::deleteTable(std::string tableName) {
 
+	if (this->noTables == 0)
+		throw "No tables to delete";
+	int ok = 0;
+	for (int i = 0; i < this->noTables; i++)
+		if (this->tables[i].getTableName() == tableName)
+			ok = 1;
+	if (ok == 0)
+		throw "Table not found";
 	Table* copy = new Table[this->noTables - 1];
 	int j = 0;
 	for (int i = 0; i < this->noTables; i++)
