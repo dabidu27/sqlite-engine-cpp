@@ -47,6 +47,12 @@ int main() {
 				break;
 			}
 
+			case DROP_TABLE_CMD:
+			{
+				db.deleteTable(tokens[2]);
+				break;
+			}
+
 			default:
 	
 				cout << endl << "Command not suported yet";
@@ -80,6 +86,12 @@ int main() {
 			break;
 		}
 
+		case DROP_TABLE_CMD:
+		{
+			db.deleteTable(tokens[2]);
+			break;
+		}
+
 		default:
 
 			cout << endl << "Command not suported yet";
@@ -89,6 +101,46 @@ int main() {
 	}
 	delete[] tokens;
 
+	cout << db;
+
+	command = "DROP TABLE students2";
+
+	parser = CommandParser(command);
+	type = parser.recognizeCommand();
+	n_tokens = 0;
+	parser.tokenizeCommand();
+	tokens = parser.getTokens();
+	n_tokens = parser.getNoTokens();
+
+	valid = parser.validateCommand();
+
+	cout << endl;
+
+	if (valid) {
+
+		switch (type) {
+
+		case CREATE_TABLE_CMD:
+		{
+			Table table = Table(tokens, n_tokens);
+			db.addTable(table);
+			break;
+		}
+
+		case DROP_TABLE_CMD:
+		{
+			db.deleteTable(tokens[2]);
+			break;
+		}
+
+		default:
+
+			cout << endl << "Command not suported yet";
+			break;
+		}
+
+	}
+	delete[] tokens;
 	cout << db;
 
 	return 0;

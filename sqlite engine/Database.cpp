@@ -38,6 +38,27 @@ int Database::getNoTables() {
 	return this->noTables;
 }
 
+void Database::deleteTable(std::string tableName) {
+
+	Table* copy = new Table[this->noTables - 1];
+	int j = 0;
+	for (int i = 0; i < this->noTables; i++)
+		if (this->tables[i].getTableName() != tableName)
+		{
+			copy[j] = this->tables[i];
+			j++;
+		}
+
+	if (this->tables != nullptr) {
+		delete[] this->tables;
+		this->tables = nullptr;
+	}
+
+	this->tables = copy;
+	this->noTables--;
+
+}
+
 Database::~Database() {
 
 	if (this->tables != nullptr) {

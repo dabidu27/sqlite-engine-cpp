@@ -12,6 +12,7 @@ class Database {
 		void addTable(Table table);
 		Table* getTables();
 		int getNoTables();
+		void deleteTable(std::string tableName);
 		void display();
 		~Database();
 };
