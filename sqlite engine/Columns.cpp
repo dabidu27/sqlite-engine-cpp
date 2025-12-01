@@ -1,4 +1,4 @@
-#pragma once
+
 #include <string>
 #include "Columns.h"
 #include <iostream>

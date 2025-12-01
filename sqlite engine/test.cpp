@@ -1,11 +1,11 @@
-#pragma once
+
 #include <iostream>
-using namespace std;
 #include "CommandParser.h"
 #include "CommandType.h"
 #include "Columns.h"
 #include "Table.h"
 #include "Database.h";
+using namespace std;
 
 int main() {
 

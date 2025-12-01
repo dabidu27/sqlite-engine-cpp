@@ -34,3 +34,5 @@ class Columns {
 		// main output stream testgi
 		friend std::ostream& operator<<(std::ostream& os, const Columns& col);
 };
+
+std::ostream& operator<<(std::ostream& os, const Columns& col);
