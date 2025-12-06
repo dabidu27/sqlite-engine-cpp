@@ -147,8 +147,7 @@ bool CommandParser::validateCreateTable() {
 }
 
 bool CommandParser::validateCreateIndex() {
-	std::regex createIndexPattern(
-		R"(^\s*CREATE\s+INDEX\s+[A-Za-z_][A-Za-z0-9_]*\s+ON\s+[A-Za-z_][A-Za-z0-9_]*\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)\s*$)");
+	std::regex createIndexPattern(R"(^\s*CREATE\s+INDEX\s+[A-Za-z_][A-Za-z0-9_]*\s+ON\s+[A-Za-z_][A-Za-z0-9_]*\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)\s*$)");
 
 	if (std::regex_match(this->command, createIndexPattern)) {
 		std::cout << std::endl << "Create index command looks valid";
@@ -175,8 +174,7 @@ bool CommandParser::validateDropTable() {
 }
 
 bool CommandParser::validateDropIndex() {
-	std::regex dropIndexPattern(
-		R"(^\s*DROP\s+INDEX\s+[A-Za-z_][A-Za-z0-9_]*\s*$)");
+	std::regex dropIndexPattern(R"(^\s*DROP\s+INDEX\s+[A-Za-z_][A-Za-z0-9_]*\s*$)");
 
 	if (std::regex_match(this->command, dropIndexPattern)) {
 		std::cout << std::endl << "DROP INDEX command looks valid";
