@@ -36,6 +36,8 @@ class Columns {
 
 		bool operator== (const Columns& other);
 		bool operator!= (const Columns& other);
+
+		explicit operator std::string();
 };
 
 std::ostream& operator<<(std::ostream& os, const Columns& col);

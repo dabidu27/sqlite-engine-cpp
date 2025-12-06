@@ -1,6 +1,6 @@
 #pragma once
 #include "Table.h"
-//cast operator, == operator
+
 class Database {
 
 	Table* tables = nullptr;
@@ -16,6 +16,8 @@ class Database {
 		void display();
 		~Database();
 		bool operator==(const Database& other);
+
+		explicit operator int();
 };
 
 void operator<< (std::ostream& console, Database& db);

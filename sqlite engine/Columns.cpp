@@ -145,3 +145,7 @@ bool Columns::operator!=(const Columns& other) {
 		return true;
 	return false;
 }
+
+explicit Columns::operator std::string() {
+	return this->name;
+}

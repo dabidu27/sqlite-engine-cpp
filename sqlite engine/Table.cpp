@@ -172,3 +172,7 @@ bool Table::operator!=(const Table& other) {
 			return true;
 	return false;
 }
+
+explicit Table::operator std::string() {
+	return this->tableName;
+}

@@ -25,4 +25,8 @@ public:
 	bool operator==(const Table& other);
 	bool operator!= (const Table& other);
 
+	explicit operator std::string();
+
 };
+
+void operator<<(std::ostream& console, Table& table);
