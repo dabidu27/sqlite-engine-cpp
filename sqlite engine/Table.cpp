@@ -173,6 +173,18 @@ bool Table::operator!=(const Table& other) {
 	return false;
 }
 
-explicit Table::operator std::string() {
+Table::operator std::string() {
 	return this->tableName;
+}
+
+void operator<<(std::ostream& console, Table& table) {
+
+	console << std::endl;
+	console << std::endl << "Table name: " << table.getTableName();
+	console << std::endl << "Columns: ";
+	Columns* columns = table.getColumns();
+	for (int i = 0; i < table.getNoColumns(); i++)
+		console << std::endl << columns[i];
+	delete[] columns;
+	columns = nullptr;
 }

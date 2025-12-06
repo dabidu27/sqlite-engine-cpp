@@ -101,7 +101,7 @@ bool Database::operator==(const Database& other) {
 	return true;
 }
 
-explicit Database::operator int() {
+Database::operator int() {
 
 	return this->noTables;
 }
