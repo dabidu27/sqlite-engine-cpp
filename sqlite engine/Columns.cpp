@@ -119,3 +119,29 @@ std::ostream& operator<<(std::ostream& os, const Columns& col) {
 	os << std::endl << "Default: " << col.defaultValue;
 	return os;
 }
+
+bool Columns::operator==(const Columns& other) {
+
+	if (this->name != other.name)
+		return false;
+	if (this->defaultValue != other.defaultValue)
+		return false;
+	if (this->type != other.type)
+		return false;
+	if (this->size != other.size)
+		return false;
+	return true;
+}
+
+bool Columns::operator!=(const Columns& other) {
+
+	if (this->name != other.name)
+		return true;
+	if (this->defaultValue != other.defaultValue)
+		return true;
+	if (this->type != other.type)
+		return true;
+	if (this->size != other.size)
+		return true;
+	return false;
+}

@@ -22,4 +22,7 @@ public:
 
 	~Table();
 
+	bool operator==(const Table& other);
+	bool operator!= (const Table& other);
+
 };

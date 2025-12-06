@@ -90,3 +90,13 @@ void operator<< (std::ostream& console, Database& db) {
 		delete[] columns;
 	}
 }
+
+bool Database::operator==(const Database& other) {
+
+	if (this->noTables != other.noTables)
+		return false;
+	for (int i = 0; i < this->noTables; i++)
+		if (this->tables[i] != other.tables[i])
+			return false;
+	return true;
+}

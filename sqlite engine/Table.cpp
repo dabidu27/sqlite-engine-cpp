@@ -148,3 +148,27 @@ Table::~Table() {
 		this->columns = nullptr;
 	}
 }
+
+bool Table::operator==(const Table& other) {
+
+	if (this->tableName != other.tableName)
+		return false;
+	if (this->n_columns != other.n_columns)
+		return false;
+	for (int i = 0; i < this->n_columns; i++)
+		if (this->columns[i] != other.columns[i])
+			return false;
+	return true;
+}
+
+bool Table::operator!=(const Table& other) {
+
+	if (this->tableName != other.tableName)
+		return true;
+	if (this->n_columns != other.n_columns)
+		return true;
+	for (int i = 0; i < this->n_columns; i++)
+		if (this->columns[i] != other.columns[i])
+			return true;
+	return false;
+}
