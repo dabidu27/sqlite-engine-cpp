@@ -146,66 +146,19 @@ bool CommandParser::validateCreateTable() {
 	
 }
 
-//bool CommandParser::validateCreateIndex() {
-//
-//	std::string copy = this->command;
-//	int n_tokens = 0;
-//	char** tokens = tokenizeCommand(n_tokens);
-//
-//	if (n_tokens < 6) {
-//
-//		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
-//		return false;
-//	}
-//
-//	if (strcmp(tokens[0], "CREATE") != 0 || strcmp(tokens[1], "INDEX") != 0) {
-//
-//		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
-//		return false;
-//	}
-//
-//	char* index_name = tokens[2];
-//	if (strcmp(index_name, "ON") == 0) {
-//
-//		std::cout << std::endl << "Error: Missing index name";
-//		return false;
-//	}
-//
-//	if (strcmp(tokens[3], "ON") != 0) {
-//
-//		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
-//		return false;
-//	}
-//
-//	char* table_name = tokens[4];
-//	if (strchr(table_name, '(') != nullptr || strchr(table_name, ')') != nullptr) {
-//
-//		std::cout << std::endl << "Error: Missing table name";
-//		return false;
-//	}
-//
-//	char* column = tokens[5];
-//	if (strchr(column, '(') == 0 || strchr(column, ')') == nullptr) {
-//
-//		std::cout << std::endl << "Error: Missing paranthesis";
-//		return false;
-//	}
-//
-//	std::cout << std::endl << "Create index command looks valid";
-//	std::cout << std::endl << "Index name: " << index_name;
-//	std::cout << std::endl << "Table name: " << table_name;
-//	std::cout << std::endl << "Column name: " << column;
-//
-//	for (int i = 0; i < n_tokens; i++) {
-//		delete[] tokens[i];
-//	}
-//	delete[] tokens;
-//
-//	return true;
-//
-//
-//}
-//
+bool CommandParser::validateCreateIndex() {
+	std::regex createIndexPattern(R"(^\s*CREATE\s+INDEX\s+[A-Za-z_][A-Za-z0-9_]*\s+ON\s+[A-Za-z_][A-Za-z0-9_]*\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)\s*$)");
+
+	if (std::regex_match(this->command, createIndexPattern)) {
+		std::cout << std::endl << "Create index command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Error: Invalid CREATE INDEX syntax";
+		return false;
+	}
+}
+
 bool CommandParser::validateDropTable() {
 
 	std::regex dropTablePattern(R"(^\s*DROP\s+TABLE\s+\w+\s*$)");
@@ -219,39 +172,20 @@ bool CommandParser::validateDropTable() {
 		return false;
 	}
 }
-//
-//bool CommandParser::validateDropIndex() {
-//
-//	std::string copy = this->command;
-//	int n_tokens = 0;
-//	char** tokens = tokenizeCommand(n_tokens);
-//
-//	if (n_tokens < 3) {
-//		std::cout << std::endl << "Error: Invalid DROP INDEX syntax";
-//		return false;
-//	}
-//
-//	if (strcmp(tokens[0], "DROP") != 0 || strcmp(tokens[1], "INDEX") != 0) {
-//		std::cout << std::endl << "Error: Invalid DROP INDEX syntax";
-//		return false;
-//	}
-//
-//	char* index_name = tokens[2];
-//	if (strlen(index_name) == 0 || strchr(index_name, '(') != nullptr || strchr(index_name, ')') != nullptr) {
-//		std::cout << std::endl << "Error: Invalid or missing index name";
-//		return false;
-//	}
-//
-//	std::cout << std::endl << "DROP INDEX command looks valid";
-//	std::cout << std::endl << "Index name: " << index_name;
-//
-//	for (int i = 0; i < n_tokens; i++)
-//		delete[] tokens[i];
-//	delete[] tokens;
-//
-//	return true;
-//}
-//
+
+bool CommandParser::validateDropIndex() {
+	std::regex dropIndexPattern(R"(^\s*DROP\s+INDEX\s+[A-Za-z_][A-Za-z0-9_]*\s*$)");
+
+	if (std::regex_match(this->command, dropIndexPattern)) {
+		std::cout << std::endl << "DROP INDEX command looks valid";
+		return true;
+	}
+	else {
+		std::cout << std::endl << "Error: Invalid DROP INDEX syntax";
+		return false;
+	}
+}
+
 bool CommandParser::validateDisplayTable() {
 
 	std::regex displayTablePattern(R"(^\s*DISPLAY\s+TABLE\s+\w+\s*$)");
@@ -341,12 +275,12 @@ bool CommandParser::validateCommand() {
 
 		case CREATE_TABLE_CMD:
 			return validateCreateTable();
-		//case CREATE_INDEX_CMD:
-			//return validateCreateIndex();
+		case CREATE_INDEX_CMD:
+			return validateCreateIndex();
 		case DROP_TABLE_CMD:
 			return validateDropTable();
-		//case DROP_INDEX_CMD:
-			//return validateDropIndex();
+		case DROP_INDEX_CMD:
+			return validateDropIndex();
 		case DISPLAY_TABLE_CMD:
 			return validateDisplayTable();
 		case INSERT_CMD:

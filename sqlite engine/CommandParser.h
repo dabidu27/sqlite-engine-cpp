@@ -29,9 +29,9 @@ class CommandParser {
 
 
 		bool validateCreateTable();
-		//bool validateCreateIndex();
+		bool validateCreateIndex();
 		bool validateDropTable();
-		//bool validateDropIndex();
+		bool validateDropIndex();
 		bool validateDisplayTable();
 		bool validateInsert();
 		bool validateDeleteTable();
