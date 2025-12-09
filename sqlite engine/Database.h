@@ -23,6 +23,8 @@ public:
 	void writeTablesMetadata(std::ofstream& file);
 	void readTablesMetadata(std::ifstream& file);
 	void printReadTablesMetadata(std::ifstream& file);
+	void createTableFile(std::string tableName);
+	void deleteTableFile(std::string tableName);
 };
 
 void operator<< (std::ostream& console, Database& db);

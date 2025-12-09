@@ -299,3 +299,25 @@ void Database::displayTable(std::string tableName) {
 		std::cout << std::endl;
 	}
 }
+
+
+void Database::createTableFile(std::string tableName) {
+
+	std::string fileName = tableName + ".bin";
+	std::ofstream createFile(fileName, std::ios::binary);
+	if (createFile.is_open()) {
+		createFile.close();
+	}
+	else {
+		throw "Couldn't create file";
+	}
+}
+
+void Database::deleteTableFile(std::string tableName) {
+	
+	std::string fileName = tableName + ".bin";
+	int status = remove(fileName.c_str());
+	if (status != 0) {
+		std::cout << std::endl << "Error removing file";
+	}
+}
