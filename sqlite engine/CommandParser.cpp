@@ -322,6 +322,12 @@ void CommandParser::runCommand(Database& db) {
 			break;
 		}
 
+		case DISPLAY_TABLE_CMD: 
+		{
+			db.displayTable(tokens[2]);
+			break;
+		}
+
 		default:
 
 			std::cout << std::endl << "Command not suported yet";
