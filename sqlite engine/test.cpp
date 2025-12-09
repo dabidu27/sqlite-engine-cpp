@@ -11,7 +11,7 @@ using namespace std;
 int main() {
 
 	Database db;
-
+	//test
 	//if we try to open a binary file in read mode and it doesn t exist => error, so we can check if it exists or not
 	ifstream readFile("table_metadata.bin", ios::binary);
 	if (readFile.is_open()) { //if the table_metadata file exists (db data is saved)
