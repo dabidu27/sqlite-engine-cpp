@@ -1,5 +1,6 @@
 #pragma once
 #include "Columns.h"
+#include <fstream>
 
 class Table {
 private:
@@ -15,6 +16,8 @@ public:
 
 	void setTableName(std::string* tokens);
 	void setColumns(std::string* tokens, int n_tokens);
+	void setColumnsObjects(Columns* columns, int noColumns);
+	void setTableNameString(std::string name);
 
 	std::string getTableName();
 	int getNoColumns();

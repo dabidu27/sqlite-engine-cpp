@@ -19,6 +19,7 @@ class Columns {
 		void setType(std::string type_string);
 		void setSize(int size);
 		void setDefaultValue(std::string defaultValue);
+		void setTypeFromType(DataType type);
 
 
 		std::string getName();

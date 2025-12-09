@@ -31,6 +31,10 @@ void Columns::setType(std::string type_string) { //the data type will be taken f
 		this->type = type;
 }
 
+void Columns::setTypeFromType(DataType type) {
+	this->type = type;
+}
+
 void Columns::setDefaultValue(std::string defaultValue) {
 
 	if (defaultValue.size() > this->size)

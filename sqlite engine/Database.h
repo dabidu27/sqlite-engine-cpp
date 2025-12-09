@@ -1,5 +1,6 @@
 #pragma once
 #include "Table.h"
+#include <fstream>
 
 class Database {
 
@@ -18,6 +19,10 @@ class Database {
 		bool operator==(const Database& other);
 
 		explicit operator int();
+
+		void writeTabelsMetadata(std::ofstream& file);
+		void readTablesMetadata(std::ifstream& file);
+		void printReadTablesMetadata(std::ifstream& file);
 };
 
 void operator<< (std::ostream& console, Database& db);

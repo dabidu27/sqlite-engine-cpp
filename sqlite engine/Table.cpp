@@ -188,3 +188,21 @@ void operator<<(std::ostream& console, Table& table) {
 	delete[] columns;
 	columns = nullptr;
 }
+
+void Table::setColumnsObjects(Columns* columns, int noColumns) {
+
+	if (this->columns != nullptr) {
+		delete[] this->columns;
+		this->columns = nullptr;
+	}
+
+	this->columns = new Columns[noColumns];
+	this->n_columns = noColumns;
+
+	for (int i = 0; i < this->n_columns; i++)
+		this->columns[i] = columns[i];
+}
+
+void Table::setTableNameString(std::string name) {
+	this->tableName = name;
+}
