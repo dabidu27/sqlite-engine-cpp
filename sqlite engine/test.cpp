@@ -43,7 +43,7 @@ int main() {
 	//save db object state in a binary file
 	ofstream writeFile("table_metadata.bin", ios::binary);
 	if (writeFile.is_open()) {
-		db.writeTabelsMetadata(writeFile);
+		db.writeTablesMetadata(writeFile);
 		writeFile.close();
 	}
 	else {

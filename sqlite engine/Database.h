@@ -7,22 +7,24 @@ class Database {
 	Table* tables = nullptr;
 	int noTables = 0;
 
-	public:
+public:
 
-		Database();
-		void addTable(Table table);
-		Table* getTables();
-		int getNoTables();
-		void deleteTable(std::string tableName);
-		void display();
-		~Database();
-		bool operator==(const Database& other);
+	Database();
+	void addTable(Table table);
+	Table* getTables();
+	int getNoTables();
+	void deleteTable(std::string tableName);
+	void displayTable(std::string tableName);
+	~Database();
+	bool operator==(const Database& other);
 
-		explicit operator int();
+	explicit operator int();
 
-		void writeTabelsMetadata(std::ofstream& file);
-		void readTablesMetadata(std::ifstream& file);
-		void printReadTablesMetadata(std::ifstream& file);
+	void writeTablesMetadata(std::ofstream& file);
+	void readTablesMetadata(std::ifstream& file);
+	void printReadTablesMetadata(std::ifstream& file);
+	void createTableFile(std::string tableName);
+	void deleteTableFile(std::string tableName);
 };
 
 void operator<< (std::ostream& console, Database& db);

@@ -313,12 +313,20 @@ void CommandParser::runCommand(Database& db) {
 		{
 			Table table = Table(tokens, n_tokens);
 			db.addTable(table);
+			db.createTableFile(tokens[2]);
 			break;
 		}
 
 		case DROP_TABLE_CMD:
 		{
 			db.deleteTable(tokens[2]);
+			db.deleteTableFile(tokens[2]);
+			break;
+		}
+
+		case DISPLAY_TABLE_CMD: 
+		{
+			db.displayTable(tokens[2]);
 			break;
 		}
 

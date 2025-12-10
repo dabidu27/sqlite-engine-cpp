@@ -106,7 +106,7 @@ Database::operator int() {
 	return this->noTables;
 }
 
-void Database::writeTabelsMetadata(std::ofstream& file) {
+void Database::writeTablesMetadata(std::ofstream& file) {
 
 	if (this->tables != nullptr) {
 
@@ -278,4 +278,46 @@ void Database::printReadTablesMetadata(std::ifstream& file) {
 	std::cout << "\n========================================" << std::endl;
 	std::cout << "  READOUT COMPLETE" << std::endl;
 	std::cout << "========================================\n" << std::endl;
+}
+
+void Database::displayTable(std::string tableName) {
+
+	int found = 0;
+	int table_index = 0;
+	for (int i = 0; i < this->noTables; i++)
+		if (this->tables[i].getTableName() == tableName)
+		{
+			found = 1;
+			table_index = i;
+		}
+	if (found == 0)
+		std::cout << std::endl << "Table not found";
+	else {
+
+		std::cout << std::endl;
+		std::cout << this->tables[table_index];
+		std::cout << std::endl;
+	}
+}
+
+
+void Database::createTableFile(std::string tableName) {
+
+	std::string fileName = tableName + ".bin";
+	std::ofstream createFile(fileName, std::ios::binary);
+	if (createFile.is_open()) {
+		createFile.close();
+	}
+	else {
+		throw "Couldn't create file";
+	}
+}
+
+void Database::deleteTableFile(std::string tableName) {
+	
+	std::string fileName = tableName + ".bin";
+	int status = remove(fileName.c_str());
+	if (status != 0) {
+		std::cout << std::endl << "Error removing file";
+	}
 }
