@@ -1,12 +1,15 @@
 #pragma once
 #include "Columns.h"
 #include <fstream>
+#include "Row.h"
 
 class Table {
 private:
 		std::string tableName = "";
 		Columns* columns = nullptr;
 		int n_columns = 0;
+		Row* rows = nullptr;
+		int noRows = 0;
 public:
 
 	Table();
@@ -22,6 +25,11 @@ public:
 	std::string getTableName();
 	int getNoColumns();
 	Columns* getColumns();
+	Row* getRows();
+	int getNoRows();
+
+	void addRow(Row row);
+
 
 	~Table();
 

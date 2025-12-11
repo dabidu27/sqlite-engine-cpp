@@ -25,6 +25,8 @@ public:
 	void printReadTablesMetadata(std::ifstream& file);
 	void createTableFile(std::string tableName);
 	void deleteTableFile(std::string tableName);
+
+	void modifyTableAtIndex(int index, Row row);
 };
 
 void operator<< (std::ostream& console, Database& db);

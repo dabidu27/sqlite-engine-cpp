@@ -321,3 +321,8 @@ void Database::deleteTableFile(std::string tableName) {
 		std::cout << std::endl << "Error removing file";
 	}
 }
+
+void Database::modifyTableAtIndex(int index, Row row) {
+
+	this->tables[index].addRow(row);
+}
