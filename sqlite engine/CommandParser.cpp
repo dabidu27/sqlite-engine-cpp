@@ -9,6 +9,7 @@
 #include "DataTypes.h"
 #include <regex>
 #include "Table.h"
+#include "CommandFileProcessor.h"
 
 CommandParser::CommandParser(const std::string command) {
 
@@ -322,7 +323,8 @@ void CommandParser::runCommand(Database& db) {
 						break;
 					}
 					else {
-						std::cout << std::endl << "Table already exists";
+						//std::cout << std::endl << "Table already exists";
+						std::cout << std::endl << "Table " << tables[i].getTableName() << " already exists";
 						break;
 					}
 				}
@@ -365,4 +367,12 @@ CommandParser::~CommandParser() {
 		delete[] this->tokens;
 		this->tokens = nullptr;
 	}
+}
+
+void CommandParser::processCommandFile(const std::string& filename, Database& db) {
+	CommandFileProcessor::processCommandFile(filename, db);
+}
+
+bool CommandParser::processDefaultCommandFiles(Database& db) {
+	return CommandFileProcessor::processDefaultCommandFiles(db);
 }
