@@ -311,9 +311,29 @@ void CommandParser::runCommand(Database& db) {
 
 		case CREATE_TABLE_CMD:
 		{
-			Table table = Table(tokens, n_tokens);
-			db.addTable(table);
-			db.createTableFile(tokens[2]);
+			int sameTable = 0;
+			Table* tables = db.getTables();
+			for(int i = 0; i < db.getNoTables(); i++)
+				if (tables[i].getTableName() == tokens[2])
+				{
+					sameTable = 1;
+					if (tokens[3] == "IF")
+					{
+						break;
+					}
+					else {
+						std::cout << std::endl << "Table already exists";
+						break;
+					}
+				}
+			
+			if (sameTable != 1) {
+
+				Table table = Table(tokens, n_tokens);
+				db.addTable(table);
+				db.createTableFile(tokens[2]);
+			}
+
 			break;
 		}
 
