@@ -25,10 +25,9 @@ int main() {
 
 	// reading from text file
 	// Process default command files and persist metadata if any were processed
-	const std::string metadataFilename = "table_metadata.bin";
 	bool processedFiles = CommandParser::processDefaultCommandFiles(db);
 	if (processedFiles) {
-		std::ofstream writeFile(metadataFilename, ios::binary);
+		std::ofstream writeFile("table_metadata.bin", ios::binary);
 		if (writeFile.is_open())
 			db.writeTablesMetadata(writeFile);
 		writeFile.close();
