@@ -9,6 +9,7 @@
 #include "DataTypes.h"
 #include <regex>
 #include "Table.h"
+#include "CommandFileProcessor.h"
 
 CommandParser::CommandParser(const std::string command) {
 
@@ -347,68 +348,10 @@ CommandParser::~CommandParser() {
 	}
 }
 
-
-static inline void trimString(std::string &s) {
-    // left trim
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }));
-    // right trim
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }).base(), s.end());
-}
-
 void CommandParser::processCommandFile(const std::string& filename, Database& db) {
-    std::ifstream inFile(filename.c_str());
-    if (!inFile.is_open()) {
-        std::cerr << "Could not open file: " << filename << " — skipping\n";
-        return;
-    }
-    std::cout << "\nProcessing file: " << filename << "\n";
-    std::string line;
-    int lineNo = 0;
-    while (std::getline(inFile, line)) {
-        ++lineNo;
-        trimString(line);
-        if (line.empty()) continue;
-        // Skip comment lines starting with "--" or "#"
-        if (line.rfind("--", 0) == 0 || line.rfind("#", 0) == 0)
-            continue;
-
-        try {
-            CommandParser parser(line);
-            parser.runCommand(db);
-        } catch (const std::exception& e) {
-            std::cerr << "Error processing command (file " << filename << " line " << lineNo
-                      << "): " << e.what() << "\n";
-        } catch (const char* s) {
-            std::cerr << "Error processing command (file " << filename << " line " << lineNo
-                      << "): " << s << "\n";
-        } catch (...) {
-            std::cerr << "Unknown error processing command (file " << filename << " line " << lineNo << ")\n";
-        }
-    }
-    inFile.close();
+	CommandFileProcessor::processCommandFile(filename, db);
 }
 
 bool CommandParser::processDefaultCommandFiles(Database& db) {
-    const char* defaultFiles[5] = {
-        "commands.txt",
-        "commands2.txt",
-        "commands3.txt",
-        "commands4.txt",
-        "commands5.txt"
-    };
-
-    bool processedAny = false;
-    for (int i = 0; i < 5; ++i) {
-        std::ifstream test(defaultFiles[i]);
-        if (test.is_open()) {
-            test.close();
-            processCommandFile(std::string(defaultFiles[i]), db);
-            processedAny = true;
-        }
-    }
-    return processedAny;
+	return CommandFileProcessor::processDefaultCommandFiles(db);
 }

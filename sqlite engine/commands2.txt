@@ -1,0 +1,1 @@
+CREATE TABLE CAINI((id, integer, 20, 0), (name, text, 20, 'caine1'))

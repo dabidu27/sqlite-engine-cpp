@@ -1,0 +1,3 @@
+CREATE TABLE PERSOANE((id, integer, 20, 0), (name, text, 20, 'student1'))
+CREATE TABLE PISICI((id, integer, 20, 0), (name, text, 20, 'pisica1'))
+CREATE TABLE URSI((id, integer, 20, 0), (name, text, 20, 'urs1'))

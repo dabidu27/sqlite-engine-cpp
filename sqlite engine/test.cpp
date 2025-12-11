@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "CommandParser.h"
+#include "CommandFileProcessor.h"
 #include "CommandType.h"
 #include "Columns.h"
 #include "Table.h"
@@ -13,38 +14,31 @@ int main() {
 	Database db;
 	//test
 	//if we try to open a binary file in read mode and it doesn t exist => error, so we can check if it exists or not
+	bool loadedDB = 0;
 	ifstream readFile("table_metadata.bin", ios::binary);
 	if (readFile.is_open()) { //if the table_metadata file exists (db data is saved)
 		db.readTablesMetadata(readFile); //read it and set it to the db object, meaning loading the database
 		cout << endl << "Database loaded";
 		readFile.close();
+		loadedDB = 1;
 	}
 	else { //if the file does not exist
 		cout << endl << "Empty Database"; //use the default db object (empty)
 	}
 
+	// reading from text file
 	// Process default command files and persist metadata if any were processed
 	const std::string metadataFilename = "table_metadata.bin";
-	bool processedFiles = CommandParser::processDefaultCommandFiles(db);
-    if (processedFiles) {
-        // Persist metadata after processing files
-        ofstream writeFile(metadataFilename.c_str(), ios::binary);
-        if (writeFile.is_open()) {
-            try {
-                db.writeTablesMetadata(writeFile);
-                cout << "\nWrote metadata to " << metadataFilename << "\n";
-            } catch (const std::exception& e) {
-                cerr << "\nError writing metadata: " << e.what() << "\n";
-            } catch (const char* s) {
-                cerr << "\nError writing metadata: " << s << "\n";
-            } catch (...) {
-                cerr << "\nUnknown error while writing metadata\n";
-            }
-            writeFile.close();
-        } else {
-            cerr << "\nCouldn't create/open metadata file for writing\n";
-        }
-    }
+	//if (!loadedDB)
+	//{
+		bool processedFiles = CommandParser::processDefaultCommandFiles(db);
+		if (processedFiles) {
+			std::ofstream writeFile(metadataFilename.c_str(), ios::binary);
+			if (writeFile.is_open())
+				db.writeTablesMetadata(writeFile);
+			writeFile.close();
+		}
+	//}
 	
 	//run commands => modify db object
 	string command = "";
