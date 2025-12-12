@@ -140,6 +140,8 @@
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataTypes.cpp" />
+    <ClCompile Include="Row.cpp" />
+    <ClCompile Include="Row.h" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="Columns.h" />
     <ClCompile Include="Table.cpp" />

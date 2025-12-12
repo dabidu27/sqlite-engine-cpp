@@ -10,6 +10,7 @@
 #include <regex>
 #include "Table.h"
 #include "CommandFileProcessor.h"
+#include "Row.h"
 
 CommandParser::CommandParser(const std::string command) {
 
@@ -328,6 +329,8 @@ void CommandParser::runCommand(Database& db) {
 						break;
 					}
 				}
+			delete[] tables;
+			tables = nullptr;
 			
 			if (sameTable != 1) {
 
@@ -349,6 +352,78 @@ void CommandParser::runCommand(Database& db) {
 		case DISPLAY_TABLE_CMD: 
 		{
 			db.displayTable(tokens[2]);
+			break;
+		}
+
+		case INSERT_CMD:
+		{
+			std::string tableName = tokens[2];
+			Table* tables = db.getTables();
+			int foundTable = -1;
+			for (int i = 0; i < db.getNoTables(); i++)
+				if (tables[i].getTableName() == tableName)
+				{
+					foundTable = i;
+					break;
+				}
+			if (foundTable == -1)
+			{
+				std::cout << std::endl << "Table does not exist";
+				delete[] tables;
+				tables = nullptr;
+			}
+
+			else {
+
+				int noValues = 0;
+				for (int i = 5; i < this->n_tokens - 1; i++)
+					if (this->tokens[i] != "," && this->tokens[i] != "'" && this->tokens[i] != "\"")
+						noValues++;
+				if (noValues < tables[foundTable].getNoColumns())
+					std::cout << std::endl << "Too few values";
+				else if (noValues > tables[foundTable].getNoColumns()) {
+					std::cout << std::endl << "Too many values";
+				}
+				else {
+
+					std::string* values = new std::string[noValues];
+					int j = 0;
+					for (int i = 5; i < this->n_tokens - 1; i++)
+						if (this->tokens[i] != "," && this->tokens[i] != "'" && this->tokens[i] != "\"")
+						{
+							values[j] = this->tokens[i];
+							j++;
+						}
+					Columns* columns = tables[foundTable].getColumns();
+					int valuesOkay = 1;
+					for (int i = 0; i < noValues; i++) {
+
+						if (columns[i].getType() == INTEGER) {
+
+							int convert = 0;
+							try {
+								convert = std::stoi(values[i]);
+							}
+							catch (std::invalid_argument e) {
+								std::cout << std::endl << "Invalid argument";
+								valuesOkay = 0;
+							}
+						}
+					}
+
+					delete[] columns;
+					columns = nullptr;
+					delete[] tables;
+					tables = nullptr;
+
+					if (valuesOkay == 1) {
+						Row row(values, noValues);
+						db.modifyTableAtIndex(foundTable, row);
+					}
+
+				}
+
+			}
 			break;
 		}
 

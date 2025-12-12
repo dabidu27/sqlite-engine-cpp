@@ -80,6 +80,8 @@ Table::Table() {
 	this->tableName = "";
 	this->n_columns = 0;
 	this->columns = nullptr;
+	this->noRows = 0;
+	this->rows = nullptr;
 }
 
 Table::Table(std::string* tokens, int n_tokens) {
@@ -93,6 +95,8 @@ Table::Table(const Table& other)
 {
 	this->tableName = other.tableName;
 	this->n_columns = other.n_columns;
+	this->noRows = other.noRows;
+
 	if (other.columns != nullptr) 
 	{
 		this->columns = new Columns[this->n_columns];
@@ -100,6 +104,14 @@ Table::Table(const Table& other)
 			this->columns[i] = other.columns[i];
 	}
 	else this->columns = nullptr;
+
+	if (other.rows != nullptr) {
+
+		this->rows = new Row[this->noRows];
+		for (int i = 0; i < this->noRows; i++)
+			this->rows[i] = other.rows[i];
+	}
+	else this->rows = nullptr;
 }
 
 void Table::operator=(const Table& other) {
@@ -113,13 +125,23 @@ void Table::operator=(const Table& other) {
 		this->columns = nullptr;
 	}
 
+	if (this->rows != nullptr) {
+		delete[] this->rows;
+		this->rows = nullptr;
+	}
+
 	
 	this->tableName = other.tableName;
 	this->n_columns = other.n_columns;
+	this->noRows = other.noRows;
 
 	this->columns = new Columns[this->n_columns];
 	for (int i = 0; i < this->n_columns; i++) 
 		this->columns[i] = other.columns[i];
+
+	this->rows = new Row[this->noRows];
+	for (int i = 0; i < this->noRows; i++)
+		this->rows[i] = other.rows[i];
 
 }
 
@@ -141,11 +163,28 @@ Columns* Table::getColumns() {
 	return copy;
 }
 
+int Table::getNoRows() {
+	return this->noRows;
+}
+
+Row* Table::getRows(){
+
+	Row* copy = new Row[this->noRows];
+	for (int i = 0; i < this->noRows; i++)
+		copy[i] = this->rows[i];
+	return copy;
+}
+
 Table::~Table() {
 
 	if (this->columns != nullptr) {
 		delete[] this->columns;
 		this->columns = nullptr;
+	}
+
+	if (this->rows != nullptr) {
+		delete[] this->rows;
+		this->rows = nullptr;
 	}
 }
 
@@ -181,12 +220,19 @@ void operator<<(std::ostream& console, Table& table) {
 
 	console << std::endl;
 	console << std::endl << "Table name: " << table.getTableName();
-	console << std::endl << "Columns: ";
+	console << std::endl << std::endl << "Columns: ";
 	Columns* columns = table.getColumns();
 	for (int i = 0; i < table.getNoColumns(); i++)
 		console << std::endl << columns[i];
+	console << std::endl <<std::endl<< "Rows: ";
+	Row* rows = table.getRows();
+	for (int i = 0; i < table.getNoRows(); i++) {
+		console << rows[i];
+	}
 	delete[] columns;
 	columns = nullptr;
+	delete[] rows;
+	rows = nullptr;
 }
 
 void Table::setColumnsObjects(Columns* columns, int noColumns) {
@@ -205,4 +251,22 @@ void Table::setColumnsObjects(Columns* columns, int noColumns) {
 
 void Table::setTableNameString(std::string name) {
 	this->tableName = name;
+}
+
+void Table::addRow(Row row) {
+
+	Row* copy = new Row[this->noRows + 1];
+
+	for (int i = 0; i < this->noRows; i++)
+		copy[i] = this->rows[i];
+
+	copy[this->noRows] = row;
+
+	if (this->rows != nullptr) {
+		delete[] this->rows;
+		this->rows = nullptr;
+	}
+
+	this->rows = copy;
+	this->noRows++;
 }

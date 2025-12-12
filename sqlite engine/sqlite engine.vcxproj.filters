@@ -63,6 +63,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandFileProcessor.cpp">
+    <ClCompile Include="Row.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Row.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
