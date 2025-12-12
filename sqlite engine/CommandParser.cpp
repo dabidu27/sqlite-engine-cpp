@@ -419,6 +419,7 @@ void CommandParser::runCommand(Database& db) {
 					if (valuesOkay == 1) {
 						Row row(values, noValues);
 						db.modifyTableAtIndex(foundTable, row);
+						std::string filename = tableName + ".bin";
 					}
 
 				}

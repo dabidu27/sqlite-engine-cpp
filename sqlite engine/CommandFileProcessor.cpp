@@ -3,10 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
-
-void trimString(std::string& s) {
-    s = std::regex_replace(s, std::regex("^\\s+|\\s+$"), "");
-}
+#include "StringUtils.h"
 
 void CommandFileProcessor::processCommandFile(const std::string& filename, Database& db) {
 
@@ -18,7 +15,7 @@ void CommandFileProcessor::processCommandFile(const std::string& filename, Datab
     std::string line;
 
     while (std::getline(inFile, line)) {
-        trimString(line);
+        StringUtils::trimString(line);
         CommandParser parser(line);
         parser.runCommand(db);
     }
