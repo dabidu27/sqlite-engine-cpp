@@ -1,1 +1,3 @@
-CREATE TABLE PERSOANE((id, integer, 20, 0), (name, text, 20, 'student1'))
+CREATE TABLE STUDENTS((id, integer, 20, 0), (name, text, 20, 'student1'))
+CREATE TABLE professors((id, integer, 20, 0), (name, text, 20, 'prof1'))
+CREATE TABLE courses((id, integer, 20, 0), (name, text, 20, 'course1'))
