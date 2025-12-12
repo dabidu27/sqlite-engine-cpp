@@ -8,5 +8,6 @@ class BinaryFilesManager {
 	public:
 		static void loadMetadata(Database& db);
 		static void writeMetadata(Database& db);
-		static void writeTableData(std::string tableName, Database& db);
+		static void writeTableRows(std::string tableName, Database& db);
+		static void loadTableRows(Database& db);
 };

@@ -11,6 +11,7 @@
 #include "Table.h"
 #include "CommandFileProcessor.h"
 #include "Row.h"
+#include "BinaryFilesManager.h"
 
 CommandParser::CommandParser(const std::string command) {
 
@@ -419,7 +420,7 @@ void CommandParser::runCommand(Database& db) {
 					if (valuesOkay == 1) {
 						Row row(values, noValues);
 						db.modifyTableAtIndex(foundTable, row);
-						std::string filename = tableName + ".bin";
+						BinaryFilesManager::writeTableRows(tableName, db);
 					}
 
 				}

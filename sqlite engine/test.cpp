@@ -14,6 +14,7 @@ int main() {
 	Database db;
 
 	BinaryFilesManager::loadMetadata(db);
+	BinaryFilesManager::loadTableRows(db);
 
 
 	// reading from text file
