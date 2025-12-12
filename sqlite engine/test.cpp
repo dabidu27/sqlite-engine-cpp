@@ -23,6 +23,16 @@ int main() {
 		cout << endl << "Empty Database"; //use the default db object (empty)
 	}
 
+	// reading from text file
+	// Process default command files and persist metadata if any were processed
+	bool processedFiles = CommandParser::processDefaultCommandFiles(db);
+	if (processedFiles) {
+		std::ofstream writeFile("table_metadata.bin", ios::binary);
+		if (writeFile.is_open())
+			db.writeTablesMetadata(writeFile);
+		writeFile.close();
+	}
+
 	//run commands => modify db object
 	string command = "";
 	CommandParser parser = CommandParser("");
@@ -31,7 +41,7 @@ int main() {
 		cout << endl << "Enter command (Exit to stop): ";
 		getline(cin, command);
 
-		if (command == "Exit")
+		if (command == "Exit" || command == "exit")
 			break;
 
 		parser = CommandParser(command);

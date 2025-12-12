@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CommandFileProcessor.h" />
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="CommandType.h" />
     <ClInclude Include="Database.h" />
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Columns.cpp" />
+    <ClCompile Include="CommandFileProcessor.cpp" />
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataTypes.cpp" />

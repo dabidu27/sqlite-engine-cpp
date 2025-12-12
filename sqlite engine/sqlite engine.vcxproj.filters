@@ -30,6 +30,9 @@
     <ClInclude Include="Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommandFileProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StringUtils.cpp">
@@ -59,6 +62,7 @@
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommandFileProcessor.cpp">
     <ClCompile Include="Row.h">
       <Filter>Header Files</Filter>
     </ClCompile>

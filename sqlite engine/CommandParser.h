@@ -24,6 +24,8 @@ class CommandParser {
 		void runCommand(Database& db);
 		~CommandParser();
 
+		static void processCommandFile(const std::string& filename, Database& db);
+		static bool processDefaultCommandFiles(Database& db);
 
 	private:
 
