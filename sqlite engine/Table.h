@@ -15,7 +15,7 @@ public:
 	Table();
 	Table(std::string* tokens, int n_tokens);
 	Table(const Table& other);
-	void operator=(const Table& other);
+	Table& operator=(const Table& other);
 
 	void setTableName(std::string* tokens);
 	void setColumns(std::string* tokens, int n_tokens);
@@ -29,6 +29,7 @@ public:
 	int getNoRows();
 
 	void addRow(Row row);
+	void deleteRow(int columnNumber, std::string leftArg);
 
 
 	~Table();

@@ -112,7 +112,7 @@ void BinaryFilesManager::loadTableRows(Database& db) {
 					}
 
 					Row row(values, noValues); //create a Row object using the values array
-					db.modifyTableAtIndex(i, row); //add it to the table
+					db.addRowAtIndex(i, row); //add it to the table
 					delete[] values;
 					values = nullptr;
 				}

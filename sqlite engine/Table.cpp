@@ -114,10 +114,10 @@ Table::Table(const Table& other)
 	else this->rows = nullptr;
 }
 
-void Table::operator=(const Table& other) {
+Table& Table::operator=(const Table& other) {
 	
 	if (this == &other) {
-		return;
+		return *this;
 	}
 
 	if (this->columns != nullptr) {
@@ -142,6 +142,8 @@ void Table::operator=(const Table& other) {
 	this->rows = new Row[this->noRows];
 	for (int i = 0; i < this->noRows; i++)
 		this->rows[i] = other.rows[i];
+
+	return *this;
 
 }
 
@@ -269,4 +271,34 @@ void Table::addRow(Row row) {
 
 	this->rows = copy;
 	this->noRows++;
+}
+
+
+void Table::deleteRow(int columnNumber, std::string rightArg) {
+
+	if (this->rows == nullptr || this->noRows == 0)
+	{
+		std::cout << std::endl << "No rows to delete";
+		return;
+	}
+
+	Row* copy = new Row[this->noRows - 1];
+	int j = 0;
+	for (int i = 0; i < this->noRows; i++) {
+
+		std::string* values = this->rows[i].getValues();
+		if (values[columnNumber] != rightArg)
+		{
+			copy[j] = this->rows[i];
+			j++;
+		}
+	}
+
+	if (this->rows != nullptr) {
+		delete[] this->rows;
+		this->rows = nullptr;
+	}
+
+	this->rows = copy;
+	this->noRows = j;
 }

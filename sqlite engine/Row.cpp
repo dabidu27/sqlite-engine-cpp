@@ -27,27 +27,40 @@ Row::Row(std::string* values, int noValues) {
 
 Row::Row(const Row& other) {
 
-	this->values = new std::string[other.noValues];
-	for (int i = 0; i < other.noValues; i++)
-		this->values[i] = other.values[i];
-	this->noValues = other.noValues;
+	if (other.noValues == 0 || other.values == nullptr) {
+		this->values = nullptr;
+		this->noValues = 0;
+	}
+	else {
+		this->values = new std::string[other.noValues];
+		for (int i = 0; i < other.noValues; i++)
+			this->values[i] = other.values[i];
+		this->noValues = other.noValues;
+	}
 }
 
-void Row::operator=(const Row& other) {
-
+Row& Row::operator=(const Row& other) {
+	
 	if (this == &other)
-		return;
+		return *this;
 
 	if (this->values != nullptr) {
 		delete[] this->values;
 		this->values = nullptr;
 	}
 
-	this->values = new std::string[other.noValues];
-	for (int i = 0; i < other.noValues; i++)
-		this->values[i] = other.values[i];
+	if (other.noValues == 0 || other.values == nullptr) {
+		this->values = nullptr;
+		this->noValues = 0;
+	}
+	else {
+		this->values = new std::string[other.noValues];
+		for (int i = 0; i < other.noValues; i++)
+			this->values[i] = other.values[i];
+		this->noValues = other.noValues;
+	}
 
-	this->noValues = other.noValues;
+	return *this;
 }
 
 int Row::getNoValues() {
@@ -72,4 +85,11 @@ void operator<<(std::ostream& console, Row& row) {
 		console << values[i] << " ";
 	delete[] values;
 	values = nullptr;
+}
+
+Row::~Row() {
+	if (this->values != nullptr) {
+		delete[] this->values;
+		this->values = nullptr;
+	}
 }

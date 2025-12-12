@@ -206,7 +206,7 @@ bool CommandParser::validateDisplayTable() {
 bool CommandParser::validateInsert()
 {
 	std::string copy = this->command;
-	std::regex insertRegex(R"(^\s*INSERT\s+INTO\s+[A-Za-z_][A-Za-z0-9_]*\s+VALUES\s*\(\s*([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")(\s*,\s*([0-9]+\.*[0-9]*|\"[A-Za-z_]+\"))*\s*\)\s*$)");
+	std::regex insertRegex(R"(^\s*INSERT\s+INTO\s+[A-Za-z_][A-Za-z0-9_]*\s+VALUES\s*\(\s*([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")(\s*,\s*([0-9]+\.*[0-9]*|\"[A-Za-z_ ]+\"))*\s*\)\s*$)");
 
 	if (std::regex_match(copy, insertRegex)) {
 
@@ -223,7 +223,7 @@ bool CommandParser::validateInsert()
 bool CommandParser::validateDeleteTable() {
 
 	std::string copy = this->command;
-	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\")\s*$)");
+	std::regex deleteTableRegex(R"(^\s*DELETE\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_ ]+\")\s*$)");
 
 	if (std::regex_match(copy, deleteTableRegex)) {
 
@@ -240,7 +240,7 @@ bool CommandParser::validateDeleteTable() {
 
 bool CommandParser::validateSelect() {
 
-	std::regex selectRegex(R"(^\s*SELECT\s+(ALL|\(\s*(\*|[A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)\s*\))\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*(?:\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_]+\"))?\s*$)");
+	std::regex selectRegex(R"(^\s*SELECT\s+(ALL|\(\s*(\*|[A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)\s*\))\s+FROM\s+[A-Za-z_][A-Za-z0-9_]*(?:\s+WHERE\s+\w+\s+=\s+([0-9]+\.*[0-9]*|\"[A-Za-z_ ]+\"))?\s*$)");
 
 	if (std::regex_match(this->command, selectRegex)) {
 
@@ -419,7 +419,7 @@ void CommandParser::runCommand(Database& db) {
 
 					if (valuesOkay == 1) {
 						Row row(values, noValues);
-						db.modifyTableAtIndex(foundTable, row);
+						db.addRowAtIndex(foundTable, row);
 						BinaryFilesManager::writeTableRows(tableName, db);
 					}
 
@@ -427,6 +427,82 @@ void CommandParser::runCommand(Database& db) {
 
 			}
 			break;
+		}
+
+		case DELETE_CMD: {
+
+			std::string tableName = this->tokens[2];
+			int equalPosition = 5;
+			std::string leftArg = this->tokens[4];
+			std::string rightArg = "";
+
+			if (this->tokens[equalPosition + 1] != "\"")
+				rightArg = this->tokens[equalPosition + 1];
+			else {
+				int i = equalPosition + 2;
+				while (this->tokens[i + 1] != "\"")
+				{
+					rightArg += this->tokens[i];
+					rightArg += " ";
+					i++;
+				}
+				rightArg += this->tokens[i];
+			}
+
+			Table* tables = db.getTables();
+			int foundTable = 0;
+			int foundColumn = 0;
+			int valueOkay = 1;
+			for (int i = 0; i < db.getNoTables(); i++) 
+				if(tables[i].getTableName() == tableName){
+					
+					foundTable = 1;
+					Columns* columns = tables[i].getColumns();
+					for(int j = 0; j < tables[i].getNoColumns(); j++)
+						if (columns[j].getName() == leftArg) {
+
+							foundColumn = 1;
+							if (columns[j].getType() == INTEGER) {
+
+								int convert = 0;
+								try {
+									convert = std::stoi(rightArg);
+								}
+								catch (std::invalid_argument e) {
+									std::cout << std::endl << "Invalid argument";
+									valueOkay = 0;
+								}
+							}
+
+							if (valueOkay != 0) {
+
+								db.deleteRowAtIndex(i, j, rightArg);
+								BinaryFilesManager::writeTableRows(tableName, db);
+							}
+
+							break;
+
+
+						}
+
+					if (foundColumn == 0)
+						std::cout << std::endl << "Column " << leftArg << " not found";
+
+					delete[] columns;
+					columns = nullptr;
+					break;
+					
+				}
+
+
+			if (foundTable == 0) {
+				std::cout << std::endl << "Table " << tableName << " not found";
+			}
+
+			delete[] tables;
+			tables = nullptr;
+			break;
+
 		}
 
 		default:

@@ -43,6 +43,7 @@ int main() {
 
 	BinaryFilesManager::writeMetadata(db);
 
+
 	//test to see the contents of the binary file
 	ifstream printReadFile("table_metadata.bin", ios::binary);
 	if (printReadFile.is_open()) {

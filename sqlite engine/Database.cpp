@@ -322,7 +322,11 @@ void Database::deleteTableFile(std::string tableName) {
 	}
 }
 
-void Database::modifyTableAtIndex(int index, Row row) {
+void Database::addRowAtIndex(int index, Row row) {
 
 	this->tables[index].addRow(row);
+}
+
+void Database::deleteRowAtIndex(int index, int columnNumber, std::string rightArg) {
+	this->tables[index].deleteRow(columnNumber, rightArg);
 }

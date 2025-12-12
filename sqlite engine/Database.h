@@ -26,7 +26,8 @@ public:
 	void createTableFile(std::string tableName);
 	void deleteTableFile(std::string tableName);
 
-	void modifyTableAtIndex(int index, Row row);
+	void addRowAtIndex(int index, Row row);
+	void deleteRowAtIndex(int index, int columnNumber, std::string leftArg);
 };
 
 void operator<< (std::ostream& console, Database& db);

@@ -20,7 +20,9 @@ class Row {
 
 		Row(const Row& other);
 
-		void operator= (const Row& other);
+		Row& operator= (const Row& other);
+
+		~Row();
 };
 
 void operator<<(std::ostream& console, Row& row);
