@@ -67,10 +67,22 @@ void CommandParser::tokenizeCommand() {
 	int i = 0;
 	int z = 0;
 	std::string current_string = "";
+	bool inQuotes = false;
 
 	while (i < this->command.size()) {
 
-		if (this->command[i] == ' ')
+		if (this->command[i] == '"') {
+			if (inQuotes) {
+
+				copy[this->n_tokens] = current_string;
+				this->n_tokens++;
+				current_string.clear();
+			}
+			inQuotes = !inQuotes;
+			i++;
+			continue;
+		}
+		if (this->command[i] == ' ' && inQuotes == false)
 		{
 			if (!current_string.empty()) {
 				copy[this->n_tokens] = current_string;
@@ -80,7 +92,7 @@ void CommandParser::tokenizeCommand() {
 			i++;
 			continue;
 		}
-		if (this->command[i] == '"' || this->command[i] == '(' || this->command[i] == ')' || this->command[i] == ',' || this->command[i] == '=' || this->command[i] == '\'')
+		if ((this->command[i] == '(' || this->command[i] == ')' || this->command[i] == ',' || this->command[i] == '=' || this->command[i] == '\'') && inQuotes == false)
 		{
 			if (!current_string.empty()) {
 				copy[this->n_tokens] = current_string;
