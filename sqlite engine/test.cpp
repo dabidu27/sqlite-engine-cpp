@@ -41,18 +41,12 @@ int main() {
 		cout << db;
 	}
 
+	BinaryFilesManager::writeTableRows(db);
 	BinaryFilesManager::writeMetadata(db);
 
 
-	//test to see the contents of the binary file
-	ifstream printReadFile("table_metadata.bin", ios::binary);
-	if (printReadFile.is_open()) {
-		db.printReadTablesMetadata(printReadFile);
-		printReadFile.close();
-	}
-	else {
-		throw "Couldn't open file";
-	}
+	BinaryFilesManager::printReadFile(db);
+	
 
 	return 0;
 }

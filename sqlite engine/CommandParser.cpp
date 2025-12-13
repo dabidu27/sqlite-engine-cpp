@@ -432,7 +432,6 @@ void CommandParser::runCommand(Database& db) {
 					if (valuesOkay == 1) {
 						Row row(values, noValues);
 						db.addRowAtIndex(foundTable, row);
-						BinaryFilesManager::writeTableRows(tableName, db);
 					}
 
 				}
@@ -489,7 +488,6 @@ void CommandParser::runCommand(Database& db) {
 							if (valueOkay != 0) {
 
 								db.deleteRowAtIndex(i, j, rightArg);
-								BinaryFilesManager::writeTableRows(tableName, db);
 							}
 
 							break;

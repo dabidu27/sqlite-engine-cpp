@@ -30,49 +30,51 @@ void BinaryFilesManager::writeMetadata(Database& db) {
 	}
 }
 
-void BinaryFilesManager::writeTableRows(std::string tableName, Database& db) {
+void BinaryFilesManager::writeTableRows(Database& db) {
 
-	std::string fileName = tableName + ".bin";
 	Table* tables = db.getTables();
 	for(int i = 0; i < db.getNoTables(); i++)
-		if (tables[i].getTableName() == tableName) {
-
+	{
+			
+			std::string fileName = tables[i].getTableName() + ".bin";
 			std::ofstream writeFile(fileName, std::ios::binary);
 			if (writeFile.is_open()) {
 
-				//write no of rows
-				int noRows = tables[i].getNoRows();
-				writeFile.write((char*)&noRows, sizeof(int));
+				if (tables[i].getNoRows() != 0 && tables[i].getRows() != nullptr)
+					
+				{
+					//write no of rows
+					int noRows = tables[i].getNoRows();
+					writeFile.write((char*)&noRows, sizeof(int));
 
-				//write no of values per row - each row should have the same no of values, so write only once
-				//the no of values per row is also equal to the no of columns
-				int noValues = tables[i].getNoColumns();
-				writeFile.write((char*)&noValues, sizeof(int));
-				Row* rows = tables[i].getRows();
-				for (int j = 0; j < noRows; j++) {
+					//write no of values per row - each row should have the same no of values, so write only once
+					//the no of values per row is also equal to the no of columns
+					int noValues = tables[i].getNoColumns();
+					writeFile.write((char*)&noValues, sizeof(int));
+					Row* rows = tables[i].getRows();
+					for (int j = 0; j < noRows; j++) {
 
-					std::string* values = rows[j].getValues();
-					for (int z = 0; z < noValues; z++) {
+						std::string* values = rows[j].getValues();
+						for (int z = 0; z < noValues; z++) {
 
-						//write value(a string) size
-						int size = values[z].size();
-						writeFile.write((char*)&size, sizeof(int));
-						//write value
-						writeFile.write(values[z].c_str(), size);
+							//write value(a string) size
+							int size = values[z].size();
+							writeFile.write((char*)&size, sizeof(int));
+							//write value
+							writeFile.write(values[z].c_str(), size);
+						}
+						delete[] values;
+						values = nullptr;
 					}
-					delete[] values;
-					values = nullptr;
+
+					delete[] rows;
+					rows = nullptr;
 				}
-
-				delete[] rows;
-				rows = nullptr;
-
 				writeFile.close();
 			}
 			else {
 				throw "Couldn't create/open file";
 			}
-			break;
 		}
 }
 
@@ -117,9 +119,24 @@ void BinaryFilesManager::loadTableRows(Database& db) {
 					values = nullptr;
 				}
 			}
+			readFile.close();
 		}
 		else {
 			throw "Couldn't open file";
 		}
+	}
+}
+
+
+//test to see the contents of the binary file
+void BinaryFilesManager::printReadFile(Database& db) {
+
+	std::ifstream printReadFile("table_metadata.bin", std::ios::binary);
+	if (printReadFile.is_open()) {
+		db.printReadTablesMetadata(printReadFile);
+		printReadFile.close();
+	}
+	else {
+		throw "Couldn't open file";
 	}
 }
