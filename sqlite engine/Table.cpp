@@ -282,11 +282,13 @@ void Table::deleteRow(int columnNumber, std::string rightArg) {
 		return;
 	}
 
-	Row* copy = new Row[this->noRows - 1];
+	Row* copy = new Row[this->noRows];
 	int j = 0;
+	int foundValue = 0;
 	for (int i = 0; i < this->noRows; i++) {
-
 		std::string* values = this->rows[i].getValues();
+		if (values[columnNumber] == rightArg)
+			foundValue = 1;
 		if (values[columnNumber] != rightArg)
 		{
 			copy[j] = this->rows[i];
@@ -294,11 +296,20 @@ void Table::deleteRow(int columnNumber, std::string rightArg) {
 		}
 	}
 
-	if (this->rows != nullptr) {
-		delete[] this->rows;
-		this->rows = nullptr;
-	}
+	if (foundValue == 1) {
 
-	this->rows = copy;
-	this->noRows = j;
+		if (this->rows != nullptr) {
+			delete[] this->rows;
+			this->rows = nullptr;
+		}
+
+		this->rows = copy;
+		this->noRows = j;
+	}
+	else
+	{
+		std::cout << std::endl << "Value not found on column " << this->columns[columnNumber].getName();
+		delete[] copy;
+		copy = nullptr;
+	}
 }

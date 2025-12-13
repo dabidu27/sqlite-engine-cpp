@@ -328,5 +328,6 @@ void Database::addRowAtIndex(int index, Row row) {
 }
 
 void Database::deleteRowAtIndex(int index, int columnNumber, std::string rightArg) {
+	
 	this->tables[index].deleteRow(columnNumber, rightArg);
 }

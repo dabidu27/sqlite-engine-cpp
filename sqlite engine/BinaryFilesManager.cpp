@@ -20,7 +20,7 @@ void BinaryFilesManager::loadMetadata(Database& db) {
 void BinaryFilesManager::writeMetadata(Database& db) {
 
 	//save db object state in a binary file
-	std::ofstream writeFile("table_metadata.bin", std::ios::binary);
+	std::ofstream writeFile("table_metadata.bin", std::ios::binary | std::ios::trunc); //trunc deletes file content first so we can overwrite
 	if (writeFile.is_open()) {
 		db.writeTablesMetadata(writeFile);
 		writeFile.close();
@@ -37,7 +37,7 @@ void BinaryFilesManager::writeTableRows(Database& db) {
 	{
 			
 			std::string fileName = tables[i].getTableName() + ".bin";
-			std::ofstream writeFile(fileName, std::ios::binary);
+			std::ofstream writeFile(fileName, std::ios::binary | std::ios::trunc); //trunc deletes file content first so we can overwrite
 			if (writeFile.is_open()) {
 
 				if (tables[i].getNoRows() != 0 && tables[i].getRows() != nullptr)

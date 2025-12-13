@@ -449,16 +449,8 @@ void CommandParser::runCommand(Database& db) {
 
 			if (this->tokens[equalPosition + 1] != "\"")
 				rightArg = this->tokens[equalPosition + 1];
-			else {
-				int i = equalPosition + 2;
-				while (this->tokens[i + 1] != "\"")
-				{
-					rightArg += this->tokens[i];
-					rightArg += " ";
-					i++;
-				}
-				rightArg += this->tokens[i];
-			}
+			else
+				rightArg = this->tokens[equalPosition + 2];
 
 			Table* tables = db.getTables();
 			int foundTable = 0;
