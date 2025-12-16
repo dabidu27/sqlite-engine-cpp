@@ -46,7 +46,6 @@ int main() {
 
 
 	BinaryFilesManager::printReadFile(db);
-	
 
 	return 0;
 }
