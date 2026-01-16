@@ -1,6 +1,7 @@
 #include "Columns.h"
 #include "Table.h"
 #include <iostream>
+#include <iomanip>
 
 
 void Table::setTableName(std::string* tokens) {
@@ -220,13 +221,24 @@ Table::operator std::string() {
 
 void operator<<(std::ostream& console, Table& table) {
 
+	int width = 15;
+
 	console << std::endl;
 	console << std::endl << "Table name: " << table.getTableName();
 	console << std::endl << std::endl << "Columns: ";
 	Columns* columns = table.getColumns();
 	for (int i = 0; i < table.getNoColumns(); i++)
 		console << std::endl << columns[i];
-	console << std::endl <<std::endl<< "Rows: ";
+
+	console << std::endl << std::endl;
+	//columns header
+	for (int i = 0; i < table.getNoColumns(); i++)
+		console << std::setw(width) << columns[i].getName();
+	console << std::endl;
+	//separator
+	for (int i = 0; i < table.getNoColumns(); i++) {
+		console << std::setw(width) << std::string(width - 1, '-');
+	}
 	Row* rows = table.getRows();
 	for (int i = 0; i < table.getNoRows(); i++) {
 		console << rows[i];

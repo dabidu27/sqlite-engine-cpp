@@ -47,10 +47,14 @@ public:
 
 class DisplayTable : public CommandLogic {
 
+private:
+
+	static int NO_DISPLAY_COMMANDS;
 public:
 
 	DisplayTable(std::string* tokens, int n_tokens);
 	void implementLogic(Database& db);
+	std::string getNoDisplays();
 };
 
 class Delete : public CommandLogic {

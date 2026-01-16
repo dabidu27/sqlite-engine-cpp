@@ -15,6 +15,7 @@ public:
 	int getNoTables();
 	void deleteTable(std::string tableName);
 	void displayTable(std::string tableName);
+	void displayTableInFile(std::string tableName, std::string noDisplayCommands);
 	~Database();
 	bool operator==(const Database& other);
 

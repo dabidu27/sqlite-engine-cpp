@@ -1,5 +1,6 @@
 #include "Database.h"
 #include <iostream>
+#include <fstream>
 
 Database::Database() {
 	this->tables = nullptr;
@@ -300,6 +301,34 @@ void Database::displayTable(std::string tableName) {
 	}
 }
 
+void Database::displayTableInFile(std::string tableName, std::string noDisplayCommands) {
+
+	std::ofstream output("Display_" + noDisplayCommands + ".txt", std::ios::ate);
+	if (output.is_open()) {
+
+		int found = 0;
+		int table_index = 0;
+		for (int i = 0; i < this->noTables; i++)
+			if (this->tables[i].getTableName() == tableName)
+			{
+				found = 1;
+				table_index = i;
+			}
+		if (found == 0)
+			std::cout << std::endl << "Table not found";
+		else {
+
+			output << std::endl;
+			output << this->tables[table_index];
+			output << std::endl;
+		}
+
+		output.close();
+	}
+	else {
+		throw new std::exception("Could not open file");
+	}
+}
 
 void Database::createTableFile(std::string tableName) {
 

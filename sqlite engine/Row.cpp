@@ -1,5 +1,6 @@
 #include "Row.h"
 #include <iostream>
+#include <iomanip>
 
 Row::Row() {
 
@@ -79,10 +80,11 @@ std::string* Row::getValues() {
 
 void operator<<(std::ostream& console, Row& row) {
 
+	int width = 15;
 	console << std::endl;
 	std::string* values = row.getValues();
 	for (int i = 0; i < row.getNoValues(); i++)
-		console << values[i] << " ";
+		console << std::setw(width) << values[i] << " ";
 	delete[] values;
 	values = nullptr;
 }

@@ -123,10 +123,26 @@ void Insert::implementLogic(Database& db) {
 	}
 }
 
-DisplayTable::DisplayTable(std::string* tokens, int n_tokens) : CommandLogic(tokens, n_tokens) {};
+int DisplayTable::NO_DISPLAY_COMMANDS = 0;
+
+DisplayTable::DisplayTable(std::string* tokens, int n_tokens) : CommandLogic(tokens, n_tokens) {
+
+	DisplayTable::NO_DISPLAY_COMMANDS++;
+};
 void DisplayTable::implementLogic(Database& db) {
 
 	db.displayTable(tokens[2]);
+	try {
+		db.displayTableInFile(tokens[2], this->getNoDisplays());
+	}
+	catch (std::exception* e) {
+
+		std::cout << std::endl << e->what();
+		delete e;
+	}
+}
+std::string DisplayTable::getNoDisplays() {
+	return std::to_string(DisplayTable::NO_DISPLAY_COMMANDS);
 }
 
 Delete::Delete(std::string* tokens, int n_tokens) : CommandLogic(tokens, n_tokens) {};

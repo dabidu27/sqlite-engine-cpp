@@ -1,0 +1,21 @@
+
+
+
+Table name: STUDENTS
+
+Columns: 
+
+Name: ID
+Data Type: INTEGER
+Size: 20
+Default: 0
+
+Name: NAME
+Data Type: TEXT
+Size: 20
+Default: STUDENT1
+
+             ID           NAME
+ -------------- --------------
+              1           DAVID 
+              2          MICNEA 
