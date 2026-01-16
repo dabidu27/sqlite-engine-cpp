@@ -4,6 +4,7 @@
 #include "Database.h"
 
 
+
 class CommandParser {
 
 	private:

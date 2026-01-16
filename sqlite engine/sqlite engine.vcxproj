@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="BinaryFilesManager.h" />
     <ClInclude Include="CommandFileProcessor.h" />
+    <ClInclude Include="CommandLogic.h" />
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="CommandType.h" />
     <ClInclude Include="Database.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="BinaryFilesManager.cpp" />
     <ClCompile Include="Columns.cpp" />
     <ClCompile Include="CommandFileProcessor.cpp" />
+    <ClCompile Include="CommandLogic.cpp" />
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataTypes.cpp" />
